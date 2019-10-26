@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const WelcomeScreen = (props) => {
-  const {time, mistakes, onClick} = props;
+  const {settings, onClick} = props;
+  const {time, mistakes} = settings;
 
   return (
     <section className="welcome">
@@ -24,8 +25,10 @@ const WelcomeScreen = (props) => {
 };
 
 WelcomeScreen.propTypes = {
-  time: PropTypes.number.isRequired,
-  mistakes: PropTypes.number.isRequired,
+  settings: PropTypes.exact({
+    time: PropTypes.number.isRequired,
+    mistakes: PropTypes.number.isRequired
+  }),
   onClick: PropTypes.func.isRequired
 };
 
