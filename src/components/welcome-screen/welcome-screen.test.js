@@ -1,22 +1,23 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import WelcomeScreen from './welcome.jsx';
+import WelcomeScreen from './welcome-screen.jsx';
 
 describe(`WelcomeScreen`, () => {
   it(`is rendered correctly`, () => {
     const mocks = {
-      time: 0,
-      mistakes: 0,
+      settings: {
+        time: 0,
+        mistakes: 0,
+      },
       onClick: jest.fn()
     };
 
-    const {time, mistakes, onClick} = mocks;
+    const {settings, onClick} = mocks;
 
     const tree = renderer
       .create(
           <WelcomeScreen
-            time={time}
-            mistakes={mistakes}
+            settings={settings}
             onClick={onClick}
           />
       )

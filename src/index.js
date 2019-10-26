@@ -1,18 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import WelcomeScreen from './components/welcome/welcome.jsx';
-
-const settings = {
-  gameTime: 5,
-  mistakes: 3
-};
+import App from './components/app/app.jsx';
+import {questions, gameSettings} from './mocks/questions';
 
 const init = () => {
   ReactDOM.render(
-      <WelcomeScreen
-        time={settings.gameTime}
-        mistakes={settings.mistakes}
-        onClick={() => {}}
+      <App
+        settings={gameSettings}
+        questions={questions}
       />,
       document.querySelector(`#root`)
   );
