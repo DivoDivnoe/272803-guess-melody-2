@@ -90,14 +90,14 @@ exports[`GuessGenreScreen component is rendered correctly 1`] = `
       >
         <button
           className="track__button track__button--play"
+          disabled={true}
+          onClick={[Function]}
           type="button"
         />
         <div
           className="track__status"
         >
-          <audio
-            src="http://somesrc/"
-          />
+          <audio />
         </div>
         <div
           className="game__answer"

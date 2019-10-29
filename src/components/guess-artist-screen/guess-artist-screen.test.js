@@ -15,9 +15,12 @@ describe(`GuessArtistScreen component`, () => {
         <GuessArtistScreen
           question={question}
           screenIndex={screenIndex}
-          onClick={() => jest.fn()}
-        />
-    );
+          onClick={jest.fn()}
+        />,
+        {createNodeMock: (el) => {
+          return el;
+        }}
+    ).toJSON();
 
     expect(tree).toMatchSnapshot();
   });

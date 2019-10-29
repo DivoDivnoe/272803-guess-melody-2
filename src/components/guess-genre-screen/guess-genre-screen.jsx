@@ -1,12 +1,16 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import Player from '../player/player.jsx';
 
 class GuessGenreScreen extends PureComponent {
   constructor(props) {
     super(props);
 
     const checks = Array.from({length: props.question.answers.length}, () => 0);
-    this.state = {checks};
+    this.state = {
+      checks,
+      currentTrack: -1
+    };
   }
 
   render() {
@@ -47,10 +51,10 @@ class GuessGenreScreen extends PureComponent {
           }}>
             {answers.map((answer, index) => (
               <div className="track" key={`answer-${screenIndex}.${index}`}>
-                <button className="track__button track__button--play" type="button"></button>
-                <div className="track__status">
-                  <audio src={answer.src}></audio>
-                </div>
+                <Player src={answer.src} isPlaying={this.state.currentTrack === index} onClick={() => {
+                  this.setState((prevState) => ({currentTrack: prevState.currentTrack === index ? -1 : index}));
+                }}/>
+
                 <div className="game__answer">
                   <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} checked={!!this.state.checks[index]} onChange={() => {
                     const checks = this.state.checks.slice();

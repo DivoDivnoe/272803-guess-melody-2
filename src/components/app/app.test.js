@@ -17,8 +17,11 @@ describe(`App component`, () => {
     ];
 
     const tree = renderer.create(
-        <App questions={questions} settings={settings} />
-    );
+        <App questions={questions} settings={settings} />,
+        {createNodeMock: (el) => {
+          return el;
+        }}
+    ).toJSON();
 
     expect(tree).toMatchSnapshot();
   });
