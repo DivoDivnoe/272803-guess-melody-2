@@ -7,49 +7,46 @@ const questions = [
   {
     type: `artist`,
     song: {
-      artist: `Quincas Moreira`,
-      src: `https://es31-server.appspot.com/guess-melody/static/music/Blue_Whale.mp3`
+      artist: `Radiohead`,
+      src: `../audio/Radiohead-Creep.mp3`,
     },
     answers: [
       {
         picture: `https://es31-server.appspot.com/guess-melody/static/artist/Quincas_Moreira.jpg`,
-        artist: `Quincas Moreira`
+        artist: `Frank Sinatra`,
       },
       {
         picture: `https://es31-server.appspot.com/guess-melody/static/artist/Density_n_Time.jpg`,
-        artist: `Density & Time`
+        artist: `Nikolay Baskov`,
       },
       {
         picture: `https://es31-server.appspot.com/guess-melody/static/artist/Endless_Love.jpg`,
-        artist: `Endless Love`
-      }
-    ]
+        artist: `Radiohead`,
+      },
+    ],
   },
   {
     type: `genre`,
-    genre: `reggae`,
+    genre: `rock`,
     answers: [
       {
-        src: `https://es31-server.appspot.com/guess-melody/static/music/Addis_Ababa.mp3`,
-        genre: `reggae`
+        src: `../audio/Baskov-Sharmanka.mp3`,
+        genre: `pop`,
       },
       {
-        src: `https://es31-server.appspot.com/guess-melody/static/music/Azure.mp3`,
-        genre: `electronic`
+        src: `../audio/Tisto-In_The_Dark.mp3`,
+        genre: `electronic`,
       },
       {
-        src: `https://es31-server.appspot.com/guess-melody/static/music/Whaling_City.mp3`,
-        genre: `country`
+        src: `../audio/Radiohead-Creep.mp3`,
+        genre: `rock`,
       },
       {
-        src: `https://es31-server.appspot.com/guess-melody/static/music/Skanada.mp3`,
-        genre: `reggae`
-      }
-    ]
-  }
+        src: `../audio/Chaif-Arg-Jam.mp3`,
+        genre: `reggae`,
+      },
+    ],
+  },
 ];
 
-export {
-  gameSettings,
-  questions
-};
+export {gameSettings, questions};

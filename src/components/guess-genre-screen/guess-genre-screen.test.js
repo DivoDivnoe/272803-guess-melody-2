@@ -15,9 +15,12 @@ describe(`GuessGenreScreen component`, () => {
         <GuessGenreScreen
           question={question}
           screenIndex={screenIndex}
-          onSubmit={() => jest.fn()}
-        />
-    );
+          onSubmit={jest.fn()}
+        />,
+        {createNodeMock: (el) => {
+          return el;
+        }}
+    ).toJSON();
 
     expect(tree).toMatchSnapshot();
   });
