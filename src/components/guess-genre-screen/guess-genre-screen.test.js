@@ -2,6 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import GuessGenreScreen from './guess-genre-screen.jsx';
 
+jest.mock(`../player/player.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`../lifes/lifes.jsx`, () => jest.fn().mockReturnValue(null));
+
 describe(`GuessGenreScreen component`, () => {
   it(`is rendered correctly`, () => {
     const question = {
@@ -16,10 +19,7 @@ describe(`GuessGenreScreen component`, () => {
           question={question}
           screenIndex={screenIndex}
           onSubmit={jest.fn()}
-        />,
-        {createNodeMock: (el) => {
-          return el;
-        }}
+        />
     ).toJSON();
 
     expect(tree).toMatchSnapshot();

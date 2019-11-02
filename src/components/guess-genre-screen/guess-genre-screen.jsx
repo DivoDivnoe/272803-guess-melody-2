@@ -1,20 +1,21 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Player from '../player/player.jsx';
+import Lifes from '../lifes/lifes.jsx';
 
 class GuessGenreScreen extends PureComponent {
   constructor(props) {
     super(props);
 
-    const checks = Array.from({length: props.question.answers.length}, () => 0);
+    const answer = Array.from({length: props.question.answers.length}, () => 0);
     this.state = {
-      checks,
+      answer,
       currentTrack: -1
     };
   }
 
   render() {
-    const {question, onSubmit, screenIndex} = this.props;
+    const {question, onAnswer, screenIndex, mistakes} = this.props;
     const {answers} = question;
 
     return (
@@ -36,18 +37,14 @@ class GuessGenreScreen extends PureComponent {
             <span className="timer__secs">00</span>
           </div>
 
-          <div className="game__mistakes">
-            <div className="wrong"></div>
-            <div className="wrong"></div>
-            <div className="wrong"></div>
-          </div>
+          <Lifes mistakes={mistakes} />
         </header>
 
         <section className="game__screen">
-          <h2 className="game__title">Выберите инди-рок треки</h2>
+          <h2 className="game__title">Выберите {question.genre} треки</h2>
           <form className="game__tracks" onSubmit={(evt) => {
             evt.preventDefault();
-            onSubmit();
+            onAnswer(this.state.answer);
           }}>
             {answers.map((answer, index) => (
               <div className="track" key={`answer-${screenIndex}.${index}`}>
@@ -56,11 +53,11 @@ class GuessGenreScreen extends PureComponent {
                 }}/>
 
                 <div className="game__answer">
-                  <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} checked={!!this.state.checks[index]} onChange={() => {
-                    const checks = this.state.checks.slice();
+                  <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} checked={!!this.state.answer[index]} onChange={() => {
+                    const checks = this.state.answer.slice();
                     checks[index] = +!checks[index];
 
-                    this.setState({checks});
+                    this.setState({answer: checks});
                   }} />
                   <label className="game__check" htmlFor={`answer-${index}`}>Отметить</label>
                 </div>
@@ -76,6 +73,7 @@ class GuessGenreScreen extends PureComponent {
 }
 
 GuessGenreScreen.propTypes = {
+  mistakes: PropTypes.number.isRequired,
   question: PropTypes.exact({
     type: PropTypes.oneOf([`genre`]).isRequired,
     genre: PropTypes.string.isRequired,
@@ -85,7 +83,7 @@ GuessGenreScreen.propTypes = {
     })).isRequired,
   }).isRequired,
   screenIndex: PropTypes.number.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  onAnswer: PropTypes.func.isRequired
 };
 
 export default GuessGenreScreen;

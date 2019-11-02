@@ -2,6 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import GuessArtistScreen from './guess-artist-screen.jsx';
 
+jest.mock(`../player/player.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`../lifes/lifes.jsx`, () => jest.fn().mockReturnValue(null));
+
 describe(`GuessArtistScreen component`, () => {
   it(`is rendered correctly`, () => {
     const question = {
@@ -16,10 +19,7 @@ describe(`GuessArtistScreen component`, () => {
           question={question}
           screenIndex={screenIndex}
           onClick={jest.fn()}
-        />,
-        {createNodeMock: (el) => {
-          return el;
-        }}
+        />
     ).toJSON();
 
     expect(tree).toMatchSnapshot();
