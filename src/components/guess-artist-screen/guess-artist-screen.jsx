@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Player from '../player/player.jsx';
 import Lifes from '../lifes/lifes.jsx';
+import Timer from '../timer/timer.jsx';
 
 class GuessArtistScreen extends PureComponent {
   constructor(props) {
@@ -11,7 +12,7 @@ class GuessArtistScreen extends PureComponent {
   }
 
   render() {
-    const {question, onAnswer, screenIndex, mistakes} = this.props;
+    const {question, onAnswer, screenIndex, mistakes, gameTime} = this.props;
     const {answers, song} = question;
 
     return (
@@ -26,12 +27,7 @@ class GuessArtistScreen extends PureComponent {
             <circle className="timer__line" cx="390" cy="390" r="370" style={{filter: `url(#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center`}} />
           </svg>
 
-          <div className="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-            <span className="timer__mins">05</span>
-            <span className="timer__dots">:</span>
-            <span className="timer__secs">00</span>
-          </div>
-
+          <Timer gameTime={gameTime} />
           <Lifes mistakes={mistakes} />
         </header>
 
@@ -65,6 +61,7 @@ class GuessArtistScreen extends PureComponent {
 export default GuessArtistScreen;
 
 GuessArtistScreen.propTypes = {
+  gameTime: PropTypes.number.isRequired,
   mistakes: PropTypes.number.isRequired,
   question: PropTypes.exact({
     type: PropTypes.oneOf([`artist`]).isRequired,

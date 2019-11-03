@@ -14,6 +14,7 @@ describe(`GuessGenreScreen component`, () => {
     };
     const screenIndex = 0;
     const mistakes = 1;
+    const gameTime = 0;
     const onAnswer = jest.fn();
     const submitPrevention = jest.fn();
 
@@ -22,6 +23,7 @@ describe(`GuessGenreScreen component`, () => {
           question={question}
           screenIndex={screenIndex}
           mistakes={mistakes}
+          gameTime={gameTime}
           onAnswer={onAnswer}
         />
     );

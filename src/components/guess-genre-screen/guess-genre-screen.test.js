@@ -4,6 +4,7 @@ import GuessGenreScreen from './guess-genre-screen.jsx';
 
 jest.mock(`../player/player.jsx`, () => jest.fn().mockReturnValue(null));
 jest.mock(`../lifes/lifes.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`../timer/timer.jsx`, () => jest.fn().mockReturnValue(null));
 
 describe(`GuessGenreScreen component`, () => {
   it(`is rendered correctly`, () => {
@@ -14,12 +15,14 @@ describe(`GuessGenreScreen component`, () => {
     };
     const screenIndex = 0;
     const mistakes = 1;
+    const gameTime = 0;
 
     const tree = renderer.create(
         <GuessGenreScreen
           question={question}
           screenIndex={screenIndex}
           mistakes={mistakes}
+          gameTime={gameTime}
           onAnswer={jest.fn()}
         />
     ).toJSON();

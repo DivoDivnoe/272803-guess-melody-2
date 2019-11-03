@@ -1,6 +1,7 @@
 const initialState = {
   mistakes: 0,
   step: -1,
+  gameTime: 0
 };
 
 Object.freeze(initialState);
@@ -8,7 +9,8 @@ Object.freeze(initialState);
 const ActionType = {
   INCREMENT_STEP: `INCREMENT_STEP`,
   INCREMENT_MISTAKES: `INCREMENT_MISTAKES`,
-  RESET: `RESET`
+  RESET: `RESET`,
+  INCREMENT_TIME: `INCREMENT_TIME`
 };
 
 const ActionCreator = {
@@ -49,6 +51,18 @@ const ActionCreator = {
       type: ActionType.RESET
     };
   },
+  incrementTime: (curTime, maxTime) => {
+    if (curTime + 1 >= maxTime) {
+      return {
+        type: ActionType.RESET
+      };
+    }
+
+    return {
+      type: ActionType.INCREMENT_TIME,
+      payload: 1
+    };
+  },
 };
 
 const reducer = (state = initialState, action) => {
@@ -59,6 +73,8 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {mistakes: state.mistakes + action.payload});
     case ActionType.RESET:
       return Object.assign({}, initialState);
+    case ActionType.INCREMENT_TIME:
+      return Object.assign({}, state, {gameTime: state.gameTime + action.payload});
   }
 
   return state;

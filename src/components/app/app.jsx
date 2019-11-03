@@ -9,10 +9,33 @@ import {ActionCreator} from '../../reducer/reducer.js';
 class App extends PureComponent {
   constructor(props) {
     super(props);
+
+    this.timerId = null;
+
+    this.tickHandler = this.tickHandler.bind(this);
+    this.stopTickHandler = this.stopTickHandler.bind(this);
   }
 
   render() {
     return this._getScreen();
+  }
+
+  tickHandler() {
+    const {settings, gameTime, onTick} = this.props;
+
+    setTimeout(() => onTick(gameTime, settings.time), 1000);
+  }
+
+  componentDidUpdate(prevProps) {
+    const {gameTime} = this.props;
+
+    if (gameTime && prevProps.gameTime !== gameTime) {
+      this.tickHandler();
+    }
+  }
+
+  stopTickHandler() {
+    clearInterval(this.timerId);
   }
 
   _getScreen() {
@@ -21,15 +44,23 @@ class App extends PureComponent {
       mistakes,
       settings,
       step,
+      gameTime,
       onWelcomeScreenClick,
       onUserAnswer
     } = this.props;
 
     if (step < 0) {
-      return <WelcomeScreen settings={settings} onClick={onWelcomeScreenClick} />;
+      return (
+        <WelcomeScreen
+          settings={settings}
+          onClick={onWelcomeScreenClick}
+          onTick={this.tickHandler}
+        />
+      );
     }
 
     const question = questions[step];
+    const timeLeft = settings.time - gameTime;
 
     switch (question.type) {
       case `artist`:
@@ -37,6 +68,7 @@ class App extends PureComponent {
           question={question}
           screenIndex={step}
           mistakes={mistakes}
+          gameTime={timeLeft}
           onAnswer={
             (userAnswer) => onUserAnswer(userAnswer, question, mistakes, settings.maxMistakes, step, questions.length)
           }
@@ -46,6 +78,7 @@ class App extends PureComponent {
           question={question}
           screenIndex={step}
           mistakes={mistakes}
+          gameTime={timeLeft}
           onAnswer={
             (userAnswer) => onUserAnswer(userAnswer, question, mistakes, settings.maxMistakes, step, questions.length)
           }
@@ -86,16 +119,20 @@ App.propTypes = {
   }),
   mistakes: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
+  gameTime: PropTypes.number.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
-  onUserAnswer: PropTypes.func.isRequired
+  onUserAnswer: PropTypes.func.isRequired,
+  onTick: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   mistakes: state.mistakes,
-  step: state.step
+  step: state.step,
+  gameTime: state.gameTime
 });
 const mapDispatchToProps = (dispatch) => ({
   onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
+  onTick: (curTime, gameTime) => dispatch(ActionCreator.incrementTime(curTime, gameTime)),
   onUserAnswer: (userAnswer, question, mistakes, maxMistakes, step, steps) => {
     dispatch(ActionCreator.incrementStep(step, steps));
     dispatch(ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes));
