@@ -13,14 +13,16 @@ describe(`GuessGenreScreen component`, () => {
       answers: [{src: `http://somesrc/`, genre: ``}]
     };
     const screenIndex = 0;
-    const onSubmit = jest.fn();
+    const mistakes = 1;
+    const onAnswer = jest.fn();
     const submitPrevention = jest.fn();
 
     const guessArtistScreen = shallow(
         <GuessGenreScreen
           question={question}
           screenIndex={screenIndex}
-          onSubmit={onSubmit}
+          mistakes={mistakes}
+          onAnswer={onAnswer}
         />
     );
 
@@ -28,7 +30,7 @@ describe(`GuessGenreScreen component`, () => {
     const form = guessArtistScreen.find(`form`);
     form.simulate(`submit`, {preventDefault: submitPrevention});
 
-    expect(onSubmit).toHaveBeenCalledTimes(1);
+    expect(onAnswer).toHaveBeenCalledTimes(1);
     expect(submitPrevention).toHaveBeenCalledTimes(1);
   });
 });

@@ -74,6 +74,7 @@ const isRightGenre = (answers, question) => {
 
 export {
   reducer,
+  ActionType,
   ActionCreator,
   isRightArtist,
   isRightGenre

@@ -13,12 +13,14 @@ describe(`GuessArtistScreen component`, () => {
       answers: [{picture: `http://somesrc/`, artist: ``}]
     };
     const screenIndex = 0;
+    const mistakes = 1;
 
     const tree = renderer.create(
         <GuessArtistScreen
           question={question}
           screenIndex={screenIndex}
-          onClick={jest.fn()}
+          mistakes={mistakes}
+          onAnswer={jest.fn()}
         />
     ).toJSON();
 

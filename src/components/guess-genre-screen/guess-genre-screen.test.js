@@ -13,12 +13,14 @@ describe(`GuessGenreScreen component`, () => {
       answers: [{src: `http://somesrc/`, genre: ``}]
     };
     const screenIndex = 0;
+    const mistakes = 1;
 
     const tree = renderer.create(
         <GuessGenreScreen
           question={question}
           screenIndex={screenIndex}
-          onSubmit={jest.fn()}
+          mistakes={mistakes}
+          onAnswer={jest.fn()}
         />
     ).toJSON();
 
