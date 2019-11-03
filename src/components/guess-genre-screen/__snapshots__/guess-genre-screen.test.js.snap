@@ -39,39 +39,6 @@ exports[`GuessGenreScreen component is rendered correctly 1`] = `
         }
       />
     </svg>
-    <div
-      className="timer__value"
-      xmlns="http://www.w3.org/1999/xhtml"
-    >
-      <span
-        className="timer__mins"
-      >
-        05
-      </span>
-      <span
-        className="timer__dots"
-      >
-        :
-      </span>
-      <span
-        className="timer__secs"
-      >
-        00
-      </span>
-    </div>
-    <div
-      className="game__mistakes"
-    >
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
-    </div>
   </header>
   <section
     className="game__screen"
@@ -79,7 +46,9 @@ exports[`GuessGenreScreen component is rendered correctly 1`] = `
     <h2
       className="game__title"
     >
-      Выберите инди-рок треки
+      Выберите 
+      
+       треки
     </h2>
     <form
       className="game__tracks"
@@ -88,17 +57,6 @@ exports[`GuessGenreScreen component is rendered correctly 1`] = `
       <div
         className="track"
       >
-        <button
-          className="track__button track__button--play"
-          disabled={true}
-          onClick={[Function]}
-          type="button"
-        />
-        <div
-          className="track__status"
-        >
-          <audio />
-        </div>
         <div
           className="game__answer"
         >

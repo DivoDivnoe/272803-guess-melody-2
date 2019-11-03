@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lifes component is rendered correctly 1`] = `
+<div
+  className="game__mistakes"
+>
+  <div
+    className="wrong"
+  />
+</div>
+`;

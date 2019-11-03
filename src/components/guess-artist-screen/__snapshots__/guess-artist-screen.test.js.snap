@@ -39,39 +39,6 @@ exports[`GuessArtistScreen component is rendered correctly 1`] = `
         }
       />
     </svg>
-    <div
-      className="timer__value"
-      xmlns="http://www.w3.org/1999/xhtml"
-    >
-      <span
-        className="timer__mins"
-      >
-        05
-      </span>
-      <span
-        className="timer__dots"
-      >
-        :
-      </span>
-      <span
-        className="timer__secs"
-      >
-        00
-      </span>
-    </div>
-    <div
-      className="game__mistakes"
-    >
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
-      <div
-        className="wrong"
-      />
-    </div>
   </header>
   <section
     className="game__screen"
@@ -86,19 +53,7 @@ exports[`GuessArtistScreen component is rendered correctly 1`] = `
     >
       <div
         className="track"
-      >
-        <button
-          className="track__button track__button--play"
-          disabled={true}
-          onClick={[Function]}
-          type="button"
-        />
-        <div
-          className="track__status"
-        >
-          <audio />
-        </div>
-      </div>
+      />
     </div>
     <form
       className="game__artist"
@@ -108,7 +63,7 @@ exports[`GuessArtistScreen component is rendered correctly 1`] = `
       >
         <input
           className="artist__input visually-hidden"
-          id="answer-1"
+          id="answer-0"
           name="answer"
           onChange={[Function]}
           type="radio"
@@ -116,7 +71,7 @@ exports[`GuessArtistScreen component is rendered correctly 1`] = `
         />
         <label
           className="artist__name"
-          htmlFor="answer-1"
+          htmlFor="answer-0"
         >
           <img
             alt=""

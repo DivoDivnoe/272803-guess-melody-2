@@ -13,19 +13,23 @@ describe(`GuessArtistScreen component`, () => {
       answers: [{picture: `http://somesrc/`, artist: ``}]
     };
     const screenIndex = 0;
-    const onClick = jest.fn();
+    const mistakes = 1;
+    const gameTime = 0;
+    const onAnswer = jest.fn();
 
     const guessArtistScreen = shallow(
         <GuessArtistScreen
           question={question}
           screenIndex={screenIndex}
-          onClick={onClick}
+          mistakes={mistakes}
+          gameTime={gameTime}
+          onAnswer={onAnswer}
         />
     );
 
     const input = guessArtistScreen.find(`input`).first();
     input.simulate(`change`);
 
-    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onAnswer).toHaveBeenCalledTimes(1);
   });
 });
