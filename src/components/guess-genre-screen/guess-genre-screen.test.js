@@ -16,15 +16,18 @@ describe(`GuessGenreScreen component`, () => {
     const screenIndex = 0;
     const mistakes = 1;
     const gameTime = 0;
+    const answer = [0, 0, 0, 0];
 
     const tree = renderer.create(
         <GuessGenreScreen
+          answer={answer}
           question={question}
           screenIndex={screenIndex}
           mistakes={mistakes}
           gameTime={gameTime}
           onAnswer={jest.fn()}
           renderPlayer={jest.fn()}
+          onClick={jest.fn()}
         />
     ).toJSON();
 

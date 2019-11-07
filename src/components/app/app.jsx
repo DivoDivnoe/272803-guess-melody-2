@@ -7,13 +7,16 @@ import {connect} from 'react-redux';
 
 import {ActionCreator} from '../../reducer/reducer.js';
 import withActivePlayer from '../../hocs/with-active-player/with-active-player';
+import withAnswers from '../../hocs/with-answers/with-answers';
 
-const GenreScreenWithActivePlayer = withActivePlayer(GuessGenreScreen);
-const ArtistScreeWithActivePlayer = withActivePlayer(GuessArtistScreen);
+const GenreScreenWrapped = withAnswers(withActivePlayer(GuessGenreScreen));
+const ArtistScreeWrapped = withActivePlayer(GuessArtistScreen);
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
+
+    this.tickId = null;
 
     this.handleTick = this.handleTick.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
@@ -22,7 +25,9 @@ class App extends PureComponent {
   componentDidUpdate(prevProps) {
     const {gameTime} = this.props;
 
-    if (gameTime && prevProps.gameTime !== gameTime) {
+    if (this.props.step < 0) {
+      this.stopTick();
+    } else if (gameTime && prevProps.gameTime !== gameTime) {
       this.handleTick();
     }
   }
@@ -30,7 +35,18 @@ class App extends PureComponent {
   handleTick() {
     const {settings, gameTime, onTick} = this.props;
 
-    setTimeout(() => onTick(gameTime, settings.time), 1000);
+    this.tickId = setTimeout(() => onTick(gameTime, settings.time), 1000);
+  }
+
+  stopTick() {
+    if (!this.tickId) {
+      return false;
+    }
+
+    clearTimeout(this.tickId);
+    this.tickId = null;
+
+    return true;
   }
 
   handleAnswer(userAnswer) {
@@ -72,7 +88,7 @@ class App extends PureComponent {
 
     switch (question.type) {
       case `artist`:
-        return <ArtistScreeWithActivePlayer
+        return <ArtistScreeWrapped
           question={question}
           screenIndex={step}
           mistakes={mistakes}
@@ -80,7 +96,7 @@ class App extends PureComponent {
           onAnswer={this.handleAnswer}
         />;
       case `genre`:
-        return <GenreScreenWithActivePlayer
+        return <GenreScreenWrapped
           question={question}
           screenIndex={step}
           mistakes={mistakes}
