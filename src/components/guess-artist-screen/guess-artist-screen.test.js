@@ -24,6 +24,7 @@ describe(`GuessArtistScreen component`, () => {
           mistakes={mistakes}
           gameTime={gameTime}
           onAnswer={jest.fn()}
+          renderPlayer={jest.fn()}
         />
     ).toJSON();
 

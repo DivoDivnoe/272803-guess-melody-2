@@ -4,38 +4,47 @@ import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import GuessArtistScreen from '../guess-artist-screen/guess-artist-screen.jsx';
 import GuessGenreScreen from '../guess-genre-screen/guess-genre-screen.jsx';
 import {connect} from 'react-redux';
+
 import {ActionCreator} from '../../reducer/reducer.js';
+import withActivePlayer from '../../hocs/with-active-player/with-active-player';
+
+const GenreScreenWithActivePlayer = withActivePlayer(GuessGenreScreen);
+const ArtistScreeWithActivePlayer = withActivePlayer(GuessArtistScreen);
 
 class App extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.timerId = null;
-
-    this.tickHandler = this.tickHandler.bind(this);
-    this.stopTickHandler = this.stopTickHandler.bind(this);
-  }
-
-  render() {
-    return this._getScreen();
-  }
-
-  tickHandler() {
-    const {settings, gameTime, onTick} = this.props;
-
-    setTimeout(() => onTick(gameTime, settings.time), 1000);
+    this.handleTick = this.handleTick.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     const {gameTime} = this.props;
 
     if (gameTime && prevProps.gameTime !== gameTime) {
-      this.tickHandler();
+      this.handleTick();
     }
   }
 
-  stopTickHandler() {
-    clearInterval(this.timerId);
+  handleTick() {
+    const {settings, gameTime, onTick} = this.props;
+
+    setTimeout(() => onTick(gameTime, settings.time), 1000);
+  }
+
+  handleAnswer(userAnswer) {
+    const {
+      questions,
+      mistakes,
+      settings,
+      step,
+      onUserAnswer
+    } = this.props;
+
+    const question = questions[step];
+
+    onUserAnswer(userAnswer, question, mistakes, settings.maxMistakes, step, questions.length);
   }
 
   _getScreen() {
@@ -45,8 +54,7 @@ class App extends PureComponent {
       settings,
       step,
       gameTime,
-      onWelcomeScreenClick,
-      onUserAnswer
+      onWelcomeScreenClick
     } = this.props;
 
     if (step < 0) {
@@ -54,7 +62,7 @@ class App extends PureComponent {
         <WelcomeScreen
           settings={settings}
           onClick={onWelcomeScreenClick}
-          onTick={this.tickHandler}
+          onTick={this.handleTick}
         />
       );
     }
@@ -64,28 +72,28 @@ class App extends PureComponent {
 
     switch (question.type) {
       case `artist`:
-        return <GuessArtistScreen
+        return <ArtistScreeWithActivePlayer
           question={question}
           screenIndex={step}
           mistakes={mistakes}
           gameTime={timeLeft}
-          onAnswer={
-            (userAnswer) => onUserAnswer(userAnswer, question, mistakes, settings.maxMistakes, step, questions.length)
-          }
+          onAnswer={this.handleAnswer}
         />;
       case `genre`:
-        return <GuessGenreScreen
+        return <GenreScreenWithActivePlayer
           question={question}
           screenIndex={step}
           mistakes={mistakes}
           gameTime={timeLeft}
-          onAnswer={
-            (userAnswer) => onUserAnswer(userAnswer, question, mistakes, settings.maxMistakes, step, questions.length)
-          }
+          onAnswer={this.handleAnswer}
         />;
     }
 
     return null;
+  }
+
+  render() {
+    return this._getScreen();
   }
 }
 

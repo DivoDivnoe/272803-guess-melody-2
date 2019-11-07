@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Player from '../player/player.jsx';
 import Lifes from '../lifes/lifes.jsx';
 import Timer from '../timer/timer.jsx';
 
@@ -11,12 +10,11 @@ class GuessGenreScreen extends PureComponent {
     const answer = Array.from({length: props.question.answers.length}, () => 0);
     this.state = {
       answer,
-      currentTrack: -1
     };
   }
 
   render() {
-    const {question, onAnswer, screenIndex, mistakes, gameTime} = this.props;
+    const {question, onAnswer, screenIndex, mistakes, gameTime, renderPlayer} = this.props;
     const {answers} = question;
 
     return (
@@ -44,9 +42,7 @@ class GuessGenreScreen extends PureComponent {
           }}>
             {answers.map((answer, index) => (
               <div className="track" key={`answer-${screenIndex}.${index}`}>
-                <Player src={answer.src} isPlaying={this.state.currentTrack === index} onClick={() => {
-                  this.setState((prevState) => ({currentTrack: prevState.currentTrack === index ? -1 : index}));
-                }}/>
+                {renderPlayer(answer, index)}
 
                 <div className="game__answer">
                   <input className="game__input visually-hidden" type="checkbox" name="answer" value={`answer-${index}`} id={`answer-${index}`} checked={!!this.state.answer[index]} onChange={() => {
@@ -80,7 +76,8 @@ GuessGenreScreen.propTypes = {
     })).isRequired,
   }).isRequired,
   screenIndex: PropTypes.number.isRequired,
-  onAnswer: PropTypes.func.isRequired
+  onAnswer: PropTypes.func.isRequired,
+  renderPlayer: PropTypes.func.isRequired
 };
 
 export default GuessGenreScreen;

@@ -16,6 +16,7 @@ describe(`GuessArtistScreen component`, () => {
     const mistakes = 1;
     const gameTime = 0;
     const onAnswer = jest.fn();
+    const renderPlayer = jest.fn();
 
     const guessArtistScreen = shallow(
         <GuessArtistScreen
@@ -24,6 +25,7 @@ describe(`GuessArtistScreen component`, () => {
           mistakes={mistakes}
           gameTime={gameTime}
           onAnswer={onAnswer}
+          renderPlayer={renderPlayer}
         />
     );
 

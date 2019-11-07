@@ -16,6 +16,7 @@ describe(`GuessGenreScreen component`, () => {
     const mistakes = 1;
     const gameTime = 0;
     const onAnswer = jest.fn();
+    const renderPlayer = jest.fn();
     const submitPrevention = jest.fn();
 
     const guessArtistScreen = shallow(
@@ -25,6 +26,7 @@ describe(`GuessGenreScreen component`, () => {
           mistakes={mistakes}
           gameTime={gameTime}
           onAnswer={onAnswer}
+          renderPlayer={renderPlayer}
         />
     );
 

@@ -6,16 +6,21 @@ describe(`Player component`, () => {
   it(`is rendered correctly`, () => {
     const mocks = {
       isPlaying: false,
-      src: ``
+      src: ``,
+      isLoading: false,
+      onLoad: jest.fn(),
+      onClick: jest.fn()
     };
 
-    const {isPlaying, src} = mocks;
+    const {isPlaying, src, isLoading, onLoad, onClick} = mocks;
 
     const tree = renderer.create(
         <Player
           isPlaying={isPlaying}
           src={src}
-          onClick={jest.fn()}
+          isLoading={isLoading}
+          onClick={onClick}
+          onLoad={onLoad}
         />,
         {createNodeMock: (el) => {
           return el;

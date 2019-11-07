@@ -6,11 +6,10 @@ class Player extends PureComponent {
     super(props);
 
     this._audioRef = React.createRef();
-    this.state = {isLoading: true};
   }
 
   render() {
-    const {isPlaying, onClick} = this.props;
+    const {isPlaying, onClick, isLoading} = this.props;
     const states = [`play`, `pause`];
 
     return (
@@ -19,7 +18,7 @@ class Player extends PureComponent {
           className={`track__button track__button--${states[+isPlaying]}`}
           type="button"
           onClick={onClick}
-          disabled={this.state.isLoading}
+          disabled={isLoading}
         />
         <div className="track__status">
           <audio ref={this._audioRef} />
@@ -29,14 +28,13 @@ class Player extends PureComponent {
   }
 
   componentDidMount() {
-    const {src} = this.props;
+    const {src, onLoad} = this.props;
 
     const audio = this._audioRef.current;
 
     audio.src = src;
-    audio.oncanplaythrough = () => {
-      this.setState({isLoading: false});
-    };
+    audio.oncanplaythrough = onLoad;
+
   }
 
   componentDidUpdate() {
@@ -60,7 +58,9 @@ class Player extends PureComponent {
 Player.propTypes = {
   isPlaying: PropTypes.bool.isRequired,
   src: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  isLoading: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onLoad: PropTypes.func.isRequired
 };
 
 export default Player;

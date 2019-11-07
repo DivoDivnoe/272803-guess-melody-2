@@ -1,18 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Player from '../player/player.jsx';
 import Lifes from '../lifes/lifes.jsx';
 import Timer from '../timer/timer.jsx';
 
 class GuessArtistScreen extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {isPlaying: false};
   }
 
   render() {
-    const {question, onAnswer, screenIndex, mistakes, gameTime} = this.props;
+    const {question, onAnswer, screenIndex, mistakes, gameTime, renderPlayer} = this.props;
     const {answers, song} = question;
 
     return (
@@ -35,9 +32,7 @@ class GuessArtistScreen extends PureComponent {
           <h2 className="game__title">Кто исполняет эту песню?</h2>
           <div className="game__track">
             <div className="track">
-              <Player src={song.src} isPlaying={this.state.isPlaying} onClick={() => {
-                this.setState((prevState) => ({isPlaying: !prevState.isPlaying}));
-              }}/>
+              {renderPlayer(song, 0)}
             </div>
           </div>
 
@@ -75,5 +70,6 @@ GuessArtistScreen.propTypes = {
     })).isRequired,
   }).isRequired,
   screenIndex: PropTypes.number.isRequired,
-  onAnswer: PropTypes.func.isRequired
+  onAnswer: PropTypes.func.isRequired,
+  renderPlayer: PropTypes.func.isRequired
 };
