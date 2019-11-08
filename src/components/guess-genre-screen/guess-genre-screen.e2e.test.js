@@ -13,8 +13,6 @@ describe(`GuessGenreScreen component`, () => {
       answers: [{src: `http://somesrc/`, genre: ``}]
     };
     const screenIndex = 0;
-    const mistakes = 1;
-    const gameTime = 0;
     const answer = [0, 1, 0, 0];
     const onAnswer = jest.fn();
     const renderPlayer = jest.fn();
@@ -26,8 +24,6 @@ describe(`GuessGenreScreen component`, () => {
           answer={answer}
           question={question}
           screenIndex={screenIndex}
-          mistakes={mistakes}
-          gameTime={gameTime}
           onAnswer={onAnswer}
           renderPlayer={renderPlayer}
           onClick={onClick}

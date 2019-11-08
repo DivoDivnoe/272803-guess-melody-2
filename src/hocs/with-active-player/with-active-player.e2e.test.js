@@ -24,13 +24,15 @@ MockCompoment.propTypes = {
 
 
 describe(`Component return by withActivePlayer function`, () => {
-  it(`is paused by default`, () => {
+  it(`first track is played by default`, () => {
     const MockComponentWrapped = withActivePlayer(MockCompoment);
+    const screenIndex = 0;
+
     const wrapper = mount(
-        <MockComponentWrapped />
+        <MockComponentWrapped screenIndex={screenIndex} />
     );
 
-    expect(wrapper.state(`activePlayer`)).toEqual(-1);
-    expect(wrapper.find(`button`).hasClass(`track__button--play`)).toEqual(true);
+    expect(wrapper.state(`activePlayer`)).toEqual(0);
+    expect(wrapper.find(`button`).hasClass(`track__button--pause`)).toEqual(true);
   });
 });

@@ -13,8 +13,6 @@ describe(`GuessArtistScreen component`, () => {
       answers: [{picture: `http://somesrc/`, artist: ``}]
     };
     const screenIndex = 0;
-    const mistakes = 1;
-    const gameTime = 0;
     const onAnswer = jest.fn();
     const renderPlayer = jest.fn();
 
@@ -22,8 +20,6 @@ describe(`GuessArtistScreen component`, () => {
         <GuessArtistScreen
           question={question}
           screenIndex={screenIndex}
-          mistakes={mistakes}
-          gameTime={gameTime}
           onAnswer={onAnswer}
           renderPlayer={renderPlayer}
         />

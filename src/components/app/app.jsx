@@ -1,16 +1,12 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
-import GuessArtistScreen from '../guess-artist-screen/guess-artist-screen.jsx';
-import GuessGenreScreen from '../guess-genre-screen/guess-genre-screen.jsx';
 import {connect} from 'react-redux';
 
-import {ActionCreator} from '../../reducer/reducer.js';
-import withActivePlayer from '../../hocs/with-active-player/with-active-player';
-import withAnswers from '../../hocs/with-answers/with-answers';
+import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import GameScreen from '../game-screen/game-screen.jsx';
 
-const GenreScreenWrapped = withAnswers(withActivePlayer(GuessGenreScreen));
-const ArtistScreeWrapped = withActivePlayer(GuessArtistScreen);
+import {ActionCreator} from '../../reducer/reducer.js';
+
 
 class App extends PureComponent {
   constructor(props) {
@@ -60,7 +56,7 @@ class App extends PureComponent {
 
     const question = questions[step];
 
-    onUserAnswer(userAnswer, question, mistakes, settings.maxMistakes, step, questions.length);
+    onUserAnswer(userAnswer, question, mistakes, settings.mistakes, step, questions.length);
   }
 
   _getScreen() {
@@ -86,26 +82,15 @@ class App extends PureComponent {
     const question = questions[step];
     const timeLeft = settings.time - gameTime;
 
-    switch (question.type) {
-      case `artist`:
-        return <ArtistScreeWrapped
-          question={question}
-          screenIndex={step}
-          mistakes={mistakes}
-          gameTime={timeLeft}
-          onAnswer={this.handleAnswer}
-        />;
-      case `genre`:
-        return <GenreScreenWrapped
-          question={question}
-          screenIndex={step}
-          mistakes={mistakes}
-          gameTime={timeLeft}
-          onAnswer={this.handleAnswer}
-        />;
-    }
-
-    return null;
+    return (
+      <GameScreen
+        question={question}
+        screenIndex={step}
+        mistakes={mistakes}
+        gameTime={timeLeft}
+        onAnswer={this.handleAnswer}
+      />
+    );
   }
 
   render() {

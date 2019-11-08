@@ -1,28 +1,32 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import GuessArtistScreen from './guess-artist-screen.jsx';
+import GameScreen from './game-screen.jsx';
 
-jest.mock(`../player/player.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`../guess-artist-screen/guess-artist-screen.jsx`, () => jest.fn().mockReturnValue(null));
+jest.mock(`../guess-genre-screen/guess-genre-screen.jsx`, () => jest.fn().mockReturnValue(null));
 jest.mock(`../header/header.jsx`, () => jest.fn().mockReturnValue(null));
 
-describe(`GuessArtistScreen component`, () => {
+describe(`GameScreen component`, () => {
   it(`is rendered correctly`, () => {
     const question = {
       type: `artist`,
       song: {artist: ``, src: ``},
       answers: [{picture: `http://somesrc/`, artist: ``}]
     };
+    const mistakes = 1;
+    const gameTime = 0;
     const screenIndex = 0;
 
     const tree = renderer.create(
-        <GuessArtistScreen
+        <GameScreen
           question={question}
+          mistakes={mistakes}
+          gameTime={gameTime}
           screenIndex={screenIndex}
-          onAnswer={jest.fn()}
-          renderPlayer={jest.fn()}
         />
     ).toJSON();
 
     expect(tree).toMatchSnapshot();
   });
 });
+

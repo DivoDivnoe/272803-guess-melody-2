@@ -12,6 +12,15 @@ const withAnswers = (Component) => {
       this.handleClick = this.handleClick.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+      const {screenIndex, question} = this.props;
+
+      if (prevProps.screenIndex !== screenIndex) {
+        const answer = Array.from({length: question.answers.length}, () => 0);
+        this.setState({answer});
+      }
+    }
+
     handleClick(index) {
       this.setState((prevState) => {
         const checks = prevState.answer.slice();
@@ -31,6 +40,7 @@ const withAnswers = (Component) => {
   }
 
   WithAnswers.propTypes = {
+    screenIndex: PropTypes.number.isRequired,
     question: PropTypes.shape({
       answers: PropTypes.arrayOf(PropTypes.exact({
         src: PropTypes.string.isRequired,
