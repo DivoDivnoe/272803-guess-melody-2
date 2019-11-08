@@ -4,7 +4,7 @@ exports[`Player component is rendered correctly 1`] = `
 Array [
   <button
     className="track__button track__button--play"
-    disabled={true}
+    disabled={false}
     onClick={[MockFunction]}
     type="button"
   />,

@@ -2,86 +2,46 @@
 
 exports[`GuessArtistScreen component is rendered correctly 1`] = `
 <section
-  className="game game--artist"
+  className="game__screen"
 >
-  <header
-    className="game__header"
+  <h2
+    className="game__title"
   >
-    <a
-      className="game__back"
-      href="#"
-    >
-      <span
-        className="visually-hidden"
-      >
-        Сыграть ещё раз
-      </span>
-      <img
-        alt="Угадай мелодию"
-        className="game__logo"
-        src="img/melody-logo-ginger.png"
-      />
-    </a>
-    <svg
-      className="timer"
-      viewBox="0 0 780 780"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle
-        className="timer__line"
-        cx="390"
-        cy="390"
-        r="370"
-        style={
-          Object {
-            "filter": "url(#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center",
-          }
-        }
-      />
-    </svg>
-  </header>
-  <section
-    className="game__screen"
+    Кто исполняет эту песню?
+  </h2>
+  <div
+    className="game__track"
   >
-    <h2
-      className="game__title"
-    >
-      Кто исполняет эту песню?
-    </h2>
     <div
-      className="game__track"
+      className="track"
+    />
+  </div>
+  <form
+    className="game__artist"
+  >
+    <div
+      className="artist"
     >
-      <div
-        className="track"
+      <input
+        className="artist__input visually-hidden"
+        id="answer-0"
+        name="answer"
+        onChange={[Function]}
+        type="radio"
+        value="\${answer.artist}"
       />
-    </div>
-    <form
-      className="game__artist"
-    >
-      <div
-        className="artist"
+      <label
+        className="artist__name"
+        htmlFor="answer-0"
       >
-        <input
-          className="artist__input visually-hidden"
-          id="answer-0"
-          name="answer"
-          onChange={[Function]}
-          type="radio"
-          value="\${answer.artist}"
+        <img
+          alt=""
+          className="artist__picture"
+          src="http://somesrc/"
         />
-        <label
-          className="artist__name"
-          htmlFor="answer-0"
-        >
-          <img
-            alt=""
-            className="artist__picture"
-            src="http://somesrc/"
-          />
-          
-        </label>
-      </div>
-    </form>
-  </section>
+        
+      </label>
+    </div>
+  </form>
 </section>
 `;
