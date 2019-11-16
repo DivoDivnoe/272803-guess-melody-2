@@ -1,3 +1,5 @@
+import {ActionType} from '../../constants';
+
 const initialState = {
   mistakes: 0,
   step: -1,
@@ -5,13 +7,6 @@ const initialState = {
 };
 
 Object.freeze(initialState);
-
-const ActionType = {
-  INCREMENT_STEP: `INCREMENT_STEP`,
-  INCREMENT_MISTAKES: `INCREMENT_MISTAKES`,
-  RESET: `RESET`,
-  INCREMENT_TIME: `INCREMENT_TIME`
-};
 
 const ActionCreator = {
   incrementStep: (step, steps) => {
@@ -62,7 +57,7 @@ const ActionCreator = {
       type: ActionType.INCREMENT_TIME,
       payload: 1
     };
-  },
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -89,9 +84,8 @@ const isRightGenre = (answers, question) => {
 };
 
 export {
-  reducer,
-  ActionType,
   ActionCreator,
   isRightArtist,
-  isRightGenre
+  isRightGenre,
+  reducer
 };
