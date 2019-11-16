@@ -184,7 +184,6 @@ describe(`reducer returns correct state`, () => {
       step: -1,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     });
   });
 
@@ -193,7 +192,6 @@ describe(`reducer returns correct state`, () => {
       step: 0,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     };
 
     const action = {
@@ -205,7 +203,6 @@ describe(`reducer returns correct state`, () => {
       step: 1,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     });
   });
 
@@ -214,7 +211,6 @@ describe(`reducer returns correct state`, () => {
       step: 0,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     };
 
     const action = {
@@ -226,7 +222,6 @@ describe(`reducer returns correct state`, () => {
       step: 0,
       mistakes: 1,
       gameTime: 0,
-      questions: []
     });
   });
 
@@ -235,7 +230,6 @@ describe(`reducer returns correct state`, () => {
       step: 0,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     };
 
     const action = {
@@ -247,7 +241,6 @@ describe(`reducer returns correct state`, () => {
       step: 0,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     });
   });
 
@@ -256,7 +249,6 @@ describe(`reducer returns correct state`, () => {
       step: 0,
       mistakes: 2,
       gameTime: 10,
-      questions: []
     };
 
     const action = {type: ActionType.RESET};
@@ -265,7 +257,6 @@ describe(`reducer returns correct state`, () => {
       step: -1,
       mistakes: 0,
       gameTime: 0,
-      questions: []
     });
   });
 });

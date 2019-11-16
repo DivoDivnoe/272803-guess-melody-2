@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import {compose} from 'recompose';
 import App from './components/app/app.jsx';
-import {gameSettings} from './mocks/questions';
+import {gameSettings} from './constants';
 import reducer from './reducer/index';
 import createApi from './api';
 

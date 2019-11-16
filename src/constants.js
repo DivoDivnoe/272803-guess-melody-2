@@ -11,7 +11,13 @@ const ActionType = {
   LOAD_QUESTIONS: `LOAD_QUESTIONS`
 };
 
+const gameSettings = {
+  time: 300,
+  mistakes: 3
+};
+
 export {
   GameType,
-  ActionType
+  ActionType,
+  gameSettings
 };

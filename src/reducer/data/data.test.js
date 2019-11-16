@@ -4,7 +4,7 @@ import {
   Operation
 } from './data';
 import {ActionType} from '../../constants';
-import createApi from '../api';
+import createApi from '../../api';
 import MockAdapter from 'axios-mock-adapter';
 
 describe(`Action creators work correctly`, () => {
@@ -24,9 +24,6 @@ describe(`reducer returns correct state`, () => {
     const questions = [{type: `artist`}, {type: `genre`}];
 
     const state = {
-      step: 0,
-      mistakes: 0,
-      gameTime: 0,
       questions: []
     };
     const action = {
@@ -35,9 +32,6 @@ describe(`reducer returns correct state`, () => {
     };
 
     expect(reducer(state, action)).toEqual({
-      step: 0,
-      mistakes: 0,
-      gameTime: 0,
       questions
     });
   });
