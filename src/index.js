@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
+import {compose} from 'recompose';
 import App from './components/app/app.jsx';
-import {questions, gameSettings} from './mocks/questions';
-import {reducer} from './reducer/reducer';
+import {gameSettings} from './mocks/questions';
+import reducer from './reducer/index';
+import createApi from './api';
+
+const api = createApi((...args) => store.dispatch(...args));
 
 const store = createStore(
     reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
+    compose(
+        applyMiddleware(thunk.withExtraArgument(api)),
+        window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f
+    )
 );
 
 const init = () => {
@@ -16,7 +24,6 @@ const init = () => {
       <Provider store={store} >
         <App
           settings={gameSettings}
-          questions={questions}
         />
       </Provider>,
       document.querySelector(`#root`)

@@ -5,7 +5,11 @@ import {connect} from 'react-redux';
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import GameScreen from '../game-screen/game-screen.jsx';
 
-import {ActionCreator} from '../../reducer/reducer.js';
+import {Operation} from '../../reducer/data/data';
+import {getQuestions} from '../../reducer/data/selectors';
+
+import {ActionCreator as GameActionCreator} from '../../reducer/game/game';
+import {getStep, getMistakes, getGameTime} from '../../reducer/game/selectors';
 
 
 class App extends PureComponent {
@@ -18,11 +22,19 @@ class App extends PureComponent {
     this.handleAnswer = this.handleAnswer.bind(this);
   }
 
+  componentDidMount() {
+    this.props.onLoadQuestions();
+  }
+
   componentDidUpdate(prevProps) {
     const {gameTime} = this.props;
 
     if (this.props.step < 0) {
       this.stopTick();
+
+      if (prevProps.step >= 0) {
+        this.props.onLoadQuestions();
+      }
     } else if (gameTime && prevProps.gameTime !== gameTime) {
       this.handleTick();
     }
@@ -72,6 +84,7 @@ class App extends PureComponent {
     if (step < 0) {
       return (
         <WelcomeScreen
+          questions={questions.length}
           settings={settings}
           onClick={onWelcomeScreenClick}
           onTick={this.handleTick}
@@ -131,20 +144,23 @@ App.propTypes = {
   gameTime: PropTypes.number.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
-  onTick: PropTypes.func.isRequired
+  onTick: PropTypes.func.isRequired,
+  onLoadQuestions: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  mistakes: state.mistakes,
-  step: state.step,
-  gameTime: state.gameTime
+  mistakes: getMistakes(state),
+  step: getStep(state),
+  gameTime: getGameTime(state),
+  questions: getQuestions(state)
 });
 const mapDispatchToProps = (dispatch) => ({
-  onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
-  onTick: (curTime, gameTime) => dispatch(ActionCreator.incrementTime(curTime, gameTime)),
+  onLoadQuestions: () => dispatch(Operation.loadQuestions()),
+  onWelcomeScreenClick: () => dispatch(GameActionCreator.incrementStep()),
+  onTick: (curTime, gameTime) => dispatch(GameActionCreator.incrementTime(curTime, gameTime)),
   onUserAnswer: (userAnswer, question, mistakes, maxMistakes, step, steps) => {
-    dispatch(ActionCreator.incrementStep(step, steps));
-    dispatch(ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes));
+    dispatch(GameActionCreator.incrementStep(step, steps));
+    dispatch(GameActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes));
   }
 });
 

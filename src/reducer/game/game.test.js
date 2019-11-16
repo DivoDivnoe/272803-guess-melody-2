@@ -1,4 +1,8 @@
-import {reducer, ActionCreator, ActionType} from '../reducer/reducer';
+import {
+  reducer,
+  ActionCreator,
+} from './game';
+import {ActionType} from '../../constants';
 
 describe(`Action creators work correctly`, () => {
   it(`for incrementing step if it is not final`, () => {
@@ -179,12 +183,19 @@ describe(`reducer returns correct state`, () => {
     expect(state).toEqual({
       step: -1,
       mistakes: 0,
-      gameTime: 0
+      gameTime: 0,
+      questions: []
     });
   });
 
   it(`with incrementing step action`, () => {
-    const state = {step: 0, mistakes: 0, gameTime: 0};
+    const state = {
+      step: 0,
+      mistakes: 0,
+      gameTime: 0,
+      questions: []
+    };
+
     const action = {
       type: ActionType.INCREMENT_STEP,
       payload: 1
@@ -193,12 +204,19 @@ describe(`reducer returns correct state`, () => {
     expect(reducer(state, action)).toEqual({
       step: 1,
       mistakes: 0,
-      gameTime: 0
+      gameTime: 0,
+      questions: []
     });
   });
 
   it(`with incrementing mistakes action, payload 1`, () => {
-    const state = {step: 0, mistakes: 0, gameTime: 0};
+    const state = {
+      step: 0,
+      mistakes: 0,
+      gameTime: 0,
+      questions: []
+    };
+
     const action = {
       type: ActionType.INCREMENT_MISTAKES,
       payload: 1
@@ -207,12 +225,19 @@ describe(`reducer returns correct state`, () => {
     expect(reducer(state, action)).toEqual({
       step: 0,
       mistakes: 1,
-      gameTime: 0
+      gameTime: 0,
+      questions: []
     });
   });
 
   it(`with incrementing mistakes action, payload 0`, () => {
-    const state = {step: 0, mistakes: 0, gameTime: 0};
+    const state = {
+      step: 0,
+      mistakes: 0,
+      gameTime: 0,
+      questions: []
+    };
+
     const action = {
       type: ActionType.INCREMENT_MISTAKES,
       payload: 0
@@ -221,18 +246,26 @@ describe(`reducer returns correct state`, () => {
     expect(reducer(state, action)).toEqual({
       step: 0,
       mistakes: 0,
-      gameTime: 0
+      gameTime: 0,
+      questions: []
     });
   });
 
   it(`with reset state action`, () => {
-    const state = {step: 0, mistakes: 2, gameTime: 10};
+    const state = {
+      step: 0,
+      mistakes: 2,
+      gameTime: 10,
+      questions: []
+    };
+
     const action = {type: ActionType.RESET};
 
     expect(reducer(state, action)).toEqual({
       step: -1,
       mistakes: 0,
-      gameTime: 0
+      gameTime: 0,
+      questions: []
     });
   });
 });

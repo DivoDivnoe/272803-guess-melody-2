@@ -25,6 +25,7 @@ describe(`App component`, () => {
     const onWelcomeScreenClick = jest.fn();
     const onUserAnswer = jest.fn();
     const onTick = jest.fn();
+    const onLoadQuestions = jest.fn();
 
     const tree = renderer.create(
         <App
@@ -36,6 +37,7 @@ describe(`App component`, () => {
           onWelcomeScreenClick={onWelcomeScreenClick}
           onUserAnswer={onUserAnswer}
           onTick={onTick}
+          onLoadQuestions={onLoadQuestions}
         />
     ).toJSON();
 

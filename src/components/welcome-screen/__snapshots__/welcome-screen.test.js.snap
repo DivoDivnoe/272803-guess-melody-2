@@ -16,6 +16,7 @@ exports[`WelcomeScreen is rendered correctly 1`] = `
   </div>
   <button
     className="welcome__button"
+    disabled={false}
     onClick={[Function]}
   >
     <span

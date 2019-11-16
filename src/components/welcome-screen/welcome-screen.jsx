@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const SECONDS_PER_MINUTE = 60;
 
 const WelcomeScreen = (props) => {
-  const {settings, onClick, onTick} = props;
+  const {settings, questions, onClick, onTick} = props;
   const {time, mistakes} = settings;
 
   return (
@@ -12,7 +12,7 @@ const WelcomeScreen = (props) => {
       <div className="welcome__logo">
         <img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83" />
       </div>
-      <button className="welcome__button" onClick={() => {
+      <button className="welcome__button" disabled={!questions} onClick={() => {
         onClick();
         onTick();
       }}>
@@ -30,6 +30,7 @@ const WelcomeScreen = (props) => {
 };
 
 WelcomeScreen.propTypes = {
+  questions: PropTypes.number.isRequired,
   settings: PropTypes.exact({
     time: PropTypes.number.isRequired,
     mistakes: PropTypes.number.isRequired
