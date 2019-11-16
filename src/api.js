@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {ActionCreator} from './reducer/user/user';
 
 const FORBIDDEN_STATUS_CODE = 403;
 
@@ -12,10 +13,10 @@ const createApi = (dispatch) => {
   const onSuccess = (response) => response;
   const onFail = (error) => {
     if (error.response.status === FORBIDDEN_STATUS_CODE) {
-      dispatch();
+      dispatch(ActionCreator.authUser(true));
     }
 
-    return error;
+    throw error;
   };
 
   api.interceptors.response.use(onSuccess, onFail);

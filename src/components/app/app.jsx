@@ -5,11 +5,14 @@ import {connect} from 'react-redux';
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import GameScreen from '../game-screen/game-screen.jsx';
 
-import {Operation} from '../../reducer/data/data';
+import {Operation as DataOperation} from '../../reducer/data/data';
 import {getQuestions} from '../../reducer/data/selectors';
 
 import {ActionCreator as GameActionCreator} from '../../reducer/game/game';
 import {getStep, getMistakes, getGameTime} from '../../reducer/game/selectors';
+
+import {Operation as UserOperation} from '../../reducer/user/user';
+import {getIsAuthorizationRequired} from '../../reducer/user/selectors';
 
 
 class App extends PureComponent {
@@ -24,6 +27,7 @@ class App extends PureComponent {
 
   componentDidMount() {
     this.props.onLoadQuestions();
+    this.props.onAuthUser();
   }
 
   componentDidUpdate(prevProps) {
@@ -142,20 +146,24 @@ App.propTypes = {
   mistakes: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
   gameTime: PropTypes.number.isRequired,
+  isAuthorizationRequired: PropTypes.bool.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
   onTick: PropTypes.func.isRequired,
-  onLoadQuestions: PropTypes.func.isRequired
+  onLoadQuestions: PropTypes.func.isRequired,
+  onAuthUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   mistakes: getMistakes(state),
   step: getStep(state),
   gameTime: getGameTime(state),
-  questions: getQuestions(state)
+  questions: getQuestions(state),
+  isAuthorizationRequired: getIsAuthorizationRequired(state)
 });
 const mapDispatchToProps = (dispatch) => ({
-  onLoadQuestions: () => dispatch(Operation.loadQuestions()),
+  onLoadQuestions: () => dispatch(DataOperation.loadQuestions()),
+  onAuthUser: () => dispatch(UserOperation.authUser()),
   onWelcomeScreenClick: () => dispatch(GameActionCreator.incrementStep()),
   onTick: (curTime, gameTime) => dispatch(GameActionCreator.incrementTime(curTime, gameTime)),
   onUserAnswer: (userAnswer, question, mistakes, maxMistakes, step, steps) => {
