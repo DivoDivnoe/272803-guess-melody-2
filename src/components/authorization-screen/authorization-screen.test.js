@@ -7,18 +7,16 @@ describe(`AuthorizationScreen component`, () => {
     const mock = {
       name: ``,
       password: ``,
-      onChangeName: jest.fn(),
-      onChangePassword: jest.fn(),
+      onChange: jest.fn(),
       onSubmit: jest.fn()
     };
-    const {name, password, onChangeName, onChangePassword, onSubmit} = mock;
+    const {name, password, onChange, onSubmit} = mock;
 
     const tree = renderer.create(
         <AuthorizationScreen
           name={name}
           password={password}
-          onChangeName={onChangeName}
-          onChangePassword={onChangePassword}
+          onChange={onChange}
           onSubmit={onSubmit}
         />
     ).toJSON();

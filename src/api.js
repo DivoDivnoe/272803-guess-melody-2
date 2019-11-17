@@ -16,7 +16,7 @@ const createApi = (dispatch) => {
       dispatch(ActionCreator.authUser(true));
     }
 
-    throw error;
+    return error;
   };
 
   api.interceptors.response.use(onSuccess, onFail);

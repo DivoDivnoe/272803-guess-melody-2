@@ -22,10 +22,12 @@ describe(`App component`, () => {
     const mistakes = 1;
     const step = 0;
     const gameTime = 0;
+    const isAuthorizationRequired = false;
     const onWelcomeScreenClick = jest.fn();
     const onUserAnswer = jest.fn();
     const onTick = jest.fn();
     const onLoadQuestions = jest.fn();
+    const onAuthUser = jest.fn();
 
     const tree = renderer.create(
         <App
@@ -34,10 +36,12 @@ describe(`App component`, () => {
           mistakes={mistakes}
           step={step}
           gameTime={gameTime}
+          isAuthorizationRequired={isAuthorizationRequired}
           onWelcomeScreenClick={onWelcomeScreenClick}
           onUserAnswer={onUserAnswer}
           onTick={onTick}
           onLoadQuestions={onLoadQuestions}
+          onAuthUser={onAuthUser}
         />
     ).toJSON();
 

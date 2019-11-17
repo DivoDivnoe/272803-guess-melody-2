@@ -10,11 +10,10 @@ describe(`WelcomeScreen`, () => {
         time: 0,
         mistakes: 0,
       },
-      onClick: jest.fn(),
-      onTick: jest.fn()
+      onClick: jest.fn()
     };
 
-    const {settings, questions, onClick, onTick} = mocks;
+    const {settings, questions, onClick} = mocks;
 
     const tree = renderer
       .create(
@@ -22,7 +21,6 @@ describe(`WelcomeScreen`, () => {
             questions={questions}
             settings={settings}
             onClick={onClick}
-            onTick={onTick}
           />
       )
       .toJSON();

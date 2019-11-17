@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const SECONDS_PER_MINUTE = 60;
 
 const WelcomeScreen = (props) => {
-  const {settings, questions, onClick, onTick} = props;
+  const {settings, questions, onClick} = props;
   const {time, mistakes} = settings;
 
   return (
@@ -14,7 +14,6 @@ const WelcomeScreen = (props) => {
       </div>
       <button className="welcome__button" disabled={!questions} onClick={() => {
         onClick();
-        onTick();
       }}>
         <span className="visually-hidden">Начать игру</span>
       </button>
@@ -35,8 +34,7 @@ WelcomeScreen.propTypes = {
     time: PropTypes.number.isRequired,
     mistakes: PropTypes.number.isRequired
   }),
-  onClick: PropTypes.func.isRequired,
-  onTick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired
 };
 
 export default WelcomeScreen;

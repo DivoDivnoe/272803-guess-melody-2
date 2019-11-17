@@ -10,16 +10,14 @@ describe(`WelcomeScreen component`, () => {
     const mocks = {
       settings: {time: 0, mistakes: 0},
       questions: 1,
-      onClick: jest.fn(),
-      onTick: jest.fn()};
-    const {settings, questions, onClick, onTick} = mocks;
+      onClick: jest.fn()};
+    const {settings, questions, onClick} = mocks;
 
     const welcomeScreen = shallow(
         <WelcomeScreen
           questions={questions}
           settings={settings}
           onClick={onClick}
-          onTick={onTick}
         />
     );
 

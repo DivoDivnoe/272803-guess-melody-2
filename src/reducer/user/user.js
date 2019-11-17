@@ -7,12 +7,8 @@ const initialState = {
 Object.freeze(initialState);
 
 const Operation = {
-  authUser: () => (dispatch, _, api) => {
-    return api.get(`/login`)
-      .then((response) => {
-        console.log('response', !!response);
-        dispatch(ActionCreator.authUser(!!response));
-      });
+  authUser: () => (_, __, api) => {
+    return api.get(`/login`);
   }
 };
 

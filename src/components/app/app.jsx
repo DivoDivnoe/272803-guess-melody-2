@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import GameScreen from '../game-screen/game-screen.jsx';
+import AuthorizationScreen from '../authorization-screen/authorization-screen.jsx';
+import withAuthData from '../../hocs/with-auth-data/with-auth-data';
 
 import {Operation as DataOperation} from '../../reducer/data/data';
 import {getQuestions} from '../../reducer/data/selectors';
@@ -13,6 +15,8 @@ import {getStep, getMistakes, getGameTime} from '../../reducer/game/selectors';
 
 import {Operation as UserOperation} from '../../reducer/user/user';
 import {getIsAuthorizationRequired} from '../../reducer/user/selectors';
+
+const AuthorizationScreenWithState = withAuthData(AuthorizationScreen);
 
 
 class App extends PureComponent {
@@ -81,6 +85,7 @@ class App extends PureComponent {
       mistakes,
       settings,
       step,
+      isAuthorizationRequired,
       gameTime,
       onWelcomeScreenClick
     } = this.props;
@@ -91,9 +96,12 @@ class App extends PureComponent {
           questions={questions.length}
           settings={settings}
           onClick={onWelcomeScreenClick}
-          onTick={this.handleTick}
         />
       );
+    } else if (isAuthorizationRequired) {
+      return <AuthorizationScreenWithState />;
+    } else if (step === 1) {
+      this.handleTick();
     }
 
     const question = questions[step];
