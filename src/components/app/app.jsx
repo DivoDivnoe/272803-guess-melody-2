@@ -1,15 +1,24 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'recompose';
 
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
 import GameScreen from '../game-screen/game-screen.jsx';
+import AuthorizationScreen from '../authorization-screen/authorization-screen.jsx';
+import withAuthData from '../../hocs/with-auth-data/with-auth-data';
+import withServerStatus from '../../hocs/with-server-status/with-server-status';
 
-import {Operation} from '../../reducer/data/data';
+import {Operation as DataOperation} from '../../reducer/data/data';
 import {getQuestions} from '../../reducer/data/selectors';
 
 import {ActionCreator as GameActionCreator} from '../../reducer/game/game';
 import {getStep, getMistakes, getGameTime} from '../../reducer/game/selectors';
+
+import {Operation as UserOperation} from '../../reducer/user/user';
+import {getIsAuthorizationRequired, getUserData} from '../../reducer/user/selectors';
+
+const AuthorizationScreenWithState = compose(withServerStatus, withAuthData)(AuthorizationScreen);
 
 
 class App extends PureComponent {
@@ -24,19 +33,22 @@ class App extends PureComponent {
 
   componentDidMount() {
     this.props.onLoadQuestions();
+    this.props.onAuthUser();
   }
 
   componentDidUpdate(prevProps) {
-    const {gameTime} = this.props;
+    const {gameTime, step, isAuthorizationRequired, onLoadQuestions, onTick} = this.props;
 
-    if (this.props.step < 0) {
+    if (step < 0) {
       this.stopTick();
 
       if (prevProps.step >= 0) {
-        this.props.onLoadQuestions();
+        onLoadQuestions();
       }
-    } else if (gameTime && prevProps.gameTime !== gameTime) {
+    } else if ((gameTime && prevProps.gameTime !== gameTime)) {
       this.handleTick();
+    } else if ((prevProps.step < 0 || prevProps.isAuthorizationRequired) && !step && !isAuthorizationRequired) {
+      onTick();
     }
   }
 
@@ -77,8 +89,10 @@ class App extends PureComponent {
       mistakes,
       settings,
       step,
+      isAuthorizationRequired,
       gameTime,
-      onWelcomeScreenClick
+      onWelcomeScreenClick,
+      onSetUserData
     } = this.props;
 
     if (step < 0) {
@@ -87,9 +101,10 @@ class App extends PureComponent {
           questions={questions.length}
           settings={settings}
           onClick={onWelcomeScreenClick}
-          onTick={this.handleTick}
         />
       );
+    } else if (isAuthorizationRequired) {
+      return <AuthorizationScreenWithState onSetUserData={onSetUserData} />;
     }
 
     const question = questions[step];
@@ -139,23 +154,34 @@ App.propTypes = {
     time: PropTypes.number.isRequired,
     mistakes: PropTypes.number.isRequired
   }),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    email: PropTypes.string
+  }).isRequired,
   mistakes: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
   gameTime: PropTypes.number.isRequired,
+  isAuthorizationRequired: PropTypes.bool.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
   onTick: PropTypes.func.isRequired,
-  onLoadQuestions: PropTypes.func.isRequired
+  onLoadQuestions: PropTypes.func.isRequired,
+  onAuthUser: PropTypes.func.isRequired,
+  onSetUserData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   mistakes: getMistakes(state),
   step: getStep(state),
   gameTime: getGameTime(state),
-  questions: getQuestions(state)
+  questions: getQuestions(state),
+  isAuthorizationRequired: getIsAuthorizationRequired(state),
+  user: getUserData(state)
 });
 const mapDispatchToProps = (dispatch) => ({
-  onLoadQuestions: () => dispatch(Operation.loadQuestions()),
+  onLoadQuestions: () => dispatch(DataOperation.loadQuestions()),
+  onAuthUser: () => dispatch(UserOperation.authUser()),
+  onSetUserData: (data, onFail) => dispatch(UserOperation.setUserData(data, onFail)),
   onWelcomeScreenClick: () => dispatch(GameActionCreator.incrementStep()),
   onTick: (curTime, gameTime) => dispatch(GameActionCreator.incrementTime(curTime, gameTime)),
   onUserAnswer: (userAnswer, question, mistakes, maxMistakes, step, steps) => {

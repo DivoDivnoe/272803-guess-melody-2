@@ -1,21 +1,22 @@
 import axios from 'axios';
-
-const FORBIDDEN_STATUS_CODE = 403;
+import {ActionCreator} from './reducer/user/user';
+import {StatusCode, apiSettings} from './constants';
 
 const createApi = (dispatch) => {
   const api = axios.create({
-    baseURL: `https://es31-server.appspot.com/guess-melody`,
-    timeout: 5000,
+    baseURL: apiSettings.HOST,
+    timeout: apiSettings.TIMEOUT,
     withCredentials: true
   });
 
   const onSuccess = (response) => response;
   const onFail = (error) => {
-    if (error.response.status === FORBIDDEN_STATUS_CODE) {
-      dispatch();
+    if (error.response.status === StatusCode.FORBIDDEN) {
+      dispatch(ActionCreator.authUser(true));
+      return error;
     }
 
-    return error;
+    throw error;
   };
 
   api.interceptors.response.use(onSuccess, onFail);
