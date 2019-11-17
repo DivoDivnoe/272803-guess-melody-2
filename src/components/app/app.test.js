@@ -19,6 +19,7 @@ describe(`App component`, () => {
         answers: [{src: `http://somesrc/`, genre: ``}]
       }
     ];
+    const user = {};
     const mistakes = 1;
     const step = 0;
     const gameTime = 0;
@@ -28,6 +29,7 @@ describe(`App component`, () => {
     const onTick = jest.fn();
     const onLoadQuestions = jest.fn();
     const onAuthUser = jest.fn();
+    const onSetUserData = jest.fn();
 
     const tree = renderer.create(
         <App
@@ -37,11 +39,13 @@ describe(`App component`, () => {
           step={step}
           gameTime={gameTime}
           isAuthorizationRequired={isAuthorizationRequired}
+          user={user}
           onWelcomeScreenClick={onWelcomeScreenClick}
           onUserAnswer={onUserAnswer}
           onTick={onTick}
           onLoadQuestions={onLoadQuestions}
           onAuthUser={onAuthUser}
+          onSetUserData={onSetUserData}
         />
     ).toJSON();
 

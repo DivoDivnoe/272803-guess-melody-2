@@ -30,8 +30,14 @@ exports[`AuthorizationScreen component is rendered correctly 1`] = `
     Хотите сравнить свой результат с предыдущими попытками? Представтесь!
   </p>
   <form
-    action=""
+    action="#"
     className="login__form"
+    onSubmit={[Function]}
+    style={
+      Object {
+        "position": "relative",
+      }
+    }
   >
     <p
       className="login__field"
@@ -76,7 +82,7 @@ exports[`AuthorizationScreen component is rendered correctly 1`] = `
     </p>
     <button
       className="login__button button"
-      onSubmit={[Function]}
+      disabled={true}
       type="submit"
     >
       Войти

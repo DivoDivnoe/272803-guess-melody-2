@@ -24,6 +24,7 @@ const withAuthData = (Component) => {
 
       return (
         <Component
+          {...this.props}
           name={name}
           password={password}
           onChange={this.handleChange}
