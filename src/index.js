@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
@@ -22,9 +23,11 @@ const store = createStore(
 const init = () => {
   ReactDOM.render(
       <Provider store={store} >
-        <App
-          settings={gameSettings}
-        />
+        <Router>
+          <App
+            settings={gameSettings}
+          />
+        </Router>
       </Provider>,
       document.querySelector(`#root`)
   );

@@ -32,10 +32,16 @@ const apiSettings = {
   TIMEOUT: 5000
 };
 
+const LoseType = {
+  TIMEOUT: `timeout`,
+  MANY_MISTAKES: `mistakes`
+};
+
 export {
   GameType,
   ActionType,
   StatusCode,
   gameSettings,
-  apiSettings
+  apiSettings,
+  LoseType
 };

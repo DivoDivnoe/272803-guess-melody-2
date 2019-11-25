@@ -1,9 +1,11 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {compose} from 'recompose';
 
 import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import LoseScreen from '../lose-screen/lose-screen.jsx';
 import GameScreen from '../game-screen/game-screen.jsx';
 import AuthorizationScreen from '../authorization-screen/authorization-screen.jsx';
 import withAuthData from '../../hocs/with-auth-data/with-auth-data';
@@ -17,6 +19,8 @@ import {getStep, getMistakes, getGameTime} from '../../reducer/game/selectors';
 
 import {Operation as UserOperation} from '../../reducer/user/user';
 import {getIsAuthorizationRequired, getUserData} from '../../reducer/user/selectors';
+
+import {LoseType} from '../../constants';
 
 const AuthorizationScreenWithState = compose(withServerStatus, withAuthData)(AuthorizationScreen);
 
@@ -89,10 +93,8 @@ class App extends PureComponent {
       mistakes,
       settings,
       step,
-      isAuthorizationRequired,
       gameTime,
       onWelcomeScreenClick,
-      onSetUserData
     } = this.props;
 
     if (step < 0) {
@@ -103,8 +105,6 @@ class App extends PureComponent {
           onClick={onWelcomeScreenClick}
         />
       );
-    } else if (isAuthorizationRequired) {
-      return <AuthorizationScreenWithState onSetUserData={onSetUserData} />;
     }
 
     const question = questions[step];
@@ -122,7 +122,43 @@ class App extends PureComponent {
   }
 
   render() {
-    return this._getScreen();
+    const {
+      questions,
+      mistakes,
+      settings,
+      gameTime,
+      onWelcomeScreenClick,
+      onSetUserData
+    } = this.props;
+
+    return (
+      <Switch>
+        <Route path="/" exact render={() => (
+          <WelcomeScreen
+            questions={questions.length}
+            settings={settings}
+            onClick={onWelcomeScreenClick}
+          />
+        )} />
+        <Route path="/auth" exact render={() => (
+          <AuthorizationScreenWithState onSetUserData={onSetUserData} />
+        )} />
+        <Route path="/lose" exact render={() => {
+          if (mistakes === settings.mistakes) {
+            return <LoseScreen type={LoseType.MANY_MISTAKES} />;
+          } else if (gameTime === settings.TIMEOUT) {
+            return <LoseScreen type={LoseType.TIMEOUT} />;
+          }
+
+          return <Redirect to="/" />;
+        }} />
+        <Route render={() => (
+          <h1>
+            404 Page Not Found
+          </h1>
+        )} />
+      </Switch>
+    );
   }
 }
 
