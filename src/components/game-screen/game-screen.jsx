@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Redirect} from 'react-router-dom';
 import GuessGenreScreen from '../guess-genre-screen/guess-genre-screen.jsx';
 import GuessArtistScreen from '../guess-artist-screen/guess-artist-screen.jsx';
 import Header from '../header/header.jsx';
@@ -18,8 +19,12 @@ const Screen = {
 };
 
 const GameScreen = (props) => {
-  const {question, gameTime, mistakes} = props;
+  const {question, gameTime, mistakes, settings} = props;
   const CurrentScreen = Screen[question.type];
+
+  if (mistakes >= settings.mistakes) {
+    return <Redirect to="/lose" />;
+  }
 
   return (
     <section className={`game game--${question.type}`}>
@@ -53,7 +58,11 @@ GameScreen.propTypes = {
     })
   ]).isRequired,
   gameTime: PropTypes.number.isRequired,
-  mistakes: PropTypes.number.isRequired
+  mistakes: PropTypes.number.isRequired,
+  settings: PropTypes.exact({
+    time: PropTypes.number.isRequired,
+    mistakes: PropTypes.number.isRequired
+  }),
 };
 
 export default GameScreen;

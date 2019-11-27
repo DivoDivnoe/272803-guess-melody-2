@@ -18,7 +18,7 @@ import {ActionCreator as GameActionCreator} from '../../reducer/game/game';
 import {getStep, getMistakes, getGameTime} from '../../reducer/game/selectors';
 
 import {Operation as UserOperation} from '../../reducer/user/user';
-import {getIsAuthorizationRequired, getUserData} from '../../reducer/user/selectors';
+import {getUserData} from '../../reducer/user/selectors';
 
 import {LoseType} from '../../constants';
 
@@ -37,22 +37,21 @@ class App extends PureComponent {
 
   componentDidMount() {
     this.props.onLoadQuestions();
-    this.props.onAuthUser();
   }
 
   componentDidUpdate(prevProps) {
-    const {gameTime, step, isAuthorizationRequired, onLoadQuestions, onTick} = this.props;
+    const {gameTime, step, onLoadQuestions, onTick, settings, mistakes} = this.props;
 
-    if (step < 0) {
+    if (mistakes >= settings.mistakes || gameTime >= settings.time) {
       this.stopTick();
-
-      if (prevProps.step >= 0) {
-        onLoadQuestions();
-      }
-    } else if ((gameTime && prevProps.gameTime !== gameTime)) {
+    } else if (gameTime && prevProps.gameTime !== gameTime) {
       this.handleTick();
-    } else if ((prevProps.step < 0 || prevProps.isAuthorizationRequired) && !step && !isAuthorizationRequired) {
+    } else if (prevProps.step < 0 && !step) {
       onTick();
+    }
+
+    if (prevProps.step >= 0 && step < 0) {
+      onLoadQuestions();
     }
   }
 
@@ -76,53 +75,18 @@ class App extends PureComponent {
   handleAnswer(userAnswer) {
     const {
       questions,
-      mistakes,
-      settings,
       step,
       onUserAnswer
     } = this.props;
 
     const question = questions[step];
 
-    onUserAnswer(userAnswer, question, mistakes, settings.mistakes, step, questions.length);
-  }
-
-  _getScreen() {
-    const {
-      questions,
-      mistakes,
-      settings,
-      step,
-      gameTime,
-      onWelcomeScreenClick,
-    } = this.props;
-
-    if (step < 0) {
-      return (
-        <WelcomeScreen
-          questions={questions.length}
-          settings={settings}
-          onClick={onWelcomeScreenClick}
-        />
-      );
-    }
-
-    const question = questions[step];
-    const timeLeft = settings.time - gameTime;
-
-    return (
-      <GameScreen
-        question={question}
-        screenIndex={step}
-        mistakes={mistakes}
-        gameTime={timeLeft}
-        onAnswer={this.handleAnswer}
-      />
-    );
+    onUserAnswer(userAnswer, question, step, questions.length);
   }
 
   render() {
     const {
+      step,
       questions,
       mistakes,
       settings,
@@ -133,13 +97,31 @@ class App extends PureComponent {
 
     return (
       <Switch>
-        <Route path="/" exact render={() => (
-          <WelcomeScreen
-            questions={questions.length}
-            settings={settings}
-            onClick={onWelcomeScreenClick}
-          />
-        )} />
+        <Route path="/" exact render={() => {
+          if (step < 0) {
+            return (
+              <WelcomeScreen
+                questions={questions.length}
+                settings={settings}
+                onClick={onWelcomeScreenClick}
+              />
+            );
+          }
+
+          const question = questions[step];
+          const timeLeft = settings.time - gameTime;
+
+          return (
+            <GameScreen
+              settings={settings}
+              question={question}
+              screenIndex={step}
+              mistakes={mistakes}
+              gameTime={timeLeft}
+              onAnswer={this.handleAnswer}
+            />
+          );
+        }} />
         <Route path="/auth" exact render={() => (
           <AuthorizationScreenWithState onSetUserData={onSetUserData} />
         )} />
@@ -197,12 +179,10 @@ App.propTypes = {
   mistakes: PropTypes.number.isRequired,
   step: PropTypes.number.isRequired,
   gameTime: PropTypes.number.isRequired,
-  isAuthorizationRequired: PropTypes.bool.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
   onTick: PropTypes.func.isRequired,
   onLoadQuestions: PropTypes.func.isRequired,
-  onAuthUser: PropTypes.func.isRequired,
   onSetUserData: PropTypes.func.isRequired
 };
 
@@ -211,18 +191,16 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   step: getStep(state),
   gameTime: getGameTime(state),
   questions: getQuestions(state),
-  isAuthorizationRequired: getIsAuthorizationRequired(state),
   user: getUserData(state)
 });
 const mapDispatchToProps = (dispatch) => ({
   onLoadQuestions: () => dispatch(DataOperation.loadQuestions()),
-  onAuthUser: () => dispatch(UserOperation.authUser()),
   onSetUserData: (data, onFail) => dispatch(UserOperation.setUserData(data, onFail)),
   onWelcomeScreenClick: () => dispatch(GameActionCreator.incrementStep()),
   onTick: (curTime, gameTime) => dispatch(GameActionCreator.incrementTime(curTime, gameTime)),
-  onUserAnswer: (userAnswer, question, mistakes, maxMistakes, step, steps) => {
+  onUserAnswer: (userAnswer, question, step, steps) => {
     dispatch(GameActionCreator.incrementStep(step, steps));
-    dispatch(GameActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes));
+    dispatch(GameActionCreator.incrementMistakes(userAnswer, question));
   }
 });
 

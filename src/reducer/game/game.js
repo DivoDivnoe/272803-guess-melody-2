@@ -19,7 +19,7 @@ const ActionCreator = {
       payload: 1
     };
   },
-  incrementMistakes: (userAnswer, question, mistakes, maxMistakes) => {
+  incrementMistakes: (userAnswer, question) => {
     let result;
 
     switch (question.type) {
@@ -30,11 +30,6 @@ const ActionCreator = {
         result = isRightGenre(userAnswer, question);
         break;
     }
-
-    if (!result && mistakes + 1 >= maxMistakes) {
-      return {type: ActionType.RESET};
-    }
-
 
     return {
       type: ActionType.INCREMENT_MISTAKES,

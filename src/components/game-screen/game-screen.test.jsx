@@ -13,6 +13,10 @@ describe(`GameScreen component`, () => {
       song: {artist: ``, src: ``},
       answers: [{picture: `http://somesrc/`, artist: ``}]
     };
+    const settings = {
+      time: 30,
+      mistakes: 2
+    };
     const mistakes = 1;
     const gameTime = 0;
     const screenIndex = 0;
@@ -23,6 +27,7 @@ describe(`GameScreen component`, () => {
           mistakes={mistakes}
           gameTime={gameTime}
           screenIndex={screenIndex}
+          settings={settings}
         />
     ).toJSON();
 
