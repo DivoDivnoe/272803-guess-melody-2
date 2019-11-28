@@ -19,10 +19,11 @@ const Screen = {
 };
 
 const GameScreen = (props) => {
-  const {question, gameTime, mistakes, settings} = props;
+  const {question, gameTime, mistakes, settings, onStopTick} = props;
   const CurrentScreen = Screen[question.type];
 
-  if (mistakes >= settings.mistakes) {
+  if (mistakes >= settings.mistakes || !gameTime) {
+    onStopTick();
     return <Redirect to="/lose" />;
   }
 
@@ -63,6 +64,7 @@ GameScreen.propTypes = {
     time: PropTypes.number.isRequired,
     mistakes: PropTypes.number.isRequired
   }),
+  onStopTick: PropTypes.func.isRequired
 };
 
 export default GameScreen;

@@ -57,10 +57,11 @@ class AuthorizationScreen extends PureComponent {
   }
 
   handleSubmit(evt) {
-    const {name, password, onSetUserData, onChangeServerStatus} = this.props;
+    const {name, password, history, onSetUserData, onChangeServerStatus} = this.props;
 
     evt.preventDefault();
     onSetUserData({email: name, password}, onChangeServerStatus);
+    history.goBack();
   }
 }
 
@@ -70,6 +71,7 @@ AuthorizationScreen.propTypes = {
   serverStatus: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   onSetUserData: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
   onChangeServerStatus: PropTypes.func.isRequired
 };
 

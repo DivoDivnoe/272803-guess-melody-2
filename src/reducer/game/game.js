@@ -9,11 +9,7 @@ const initialState = {
 Object.freeze(initialState);
 
 const ActionCreator = {
-  incrementStep: (step, steps) => {
-    if (step + 1 >= steps) {
-      return {type: ActionType.RESET};
-    }
-
+  incrementStep: () => {
     return {
       type: ActionType.INCREMENT_STEP,
       payload: 1
@@ -41,13 +37,12 @@ const ActionCreator = {
       type: ActionType.RESET
     };
   },
-  incrementTime: (curTime, maxTime) => {
-    if (curTime + 1 >= maxTime) {
-      return {
-        type: ActionType.RESET
-      };
-    }
-
+  replay: () => {
+    return {
+      type: ActionType.REPLAY
+    };
+  },
+  incrementTime: () => {
     return {
       type: ActionType.INCREMENT_TIME,
       payload: 1
@@ -63,6 +58,8 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {mistakes: state.mistakes + action.payload});
     case ActionType.RESET:
       return Object.assign({}, initialState);
+    case ActionType.REPLAY:
+      return Object.assign({}, initialState, {step: 0});
     case ActionType.INCREMENT_TIME:
       return Object.assign({}, state, {gameTime: state.gameTime + action.payload});
   }

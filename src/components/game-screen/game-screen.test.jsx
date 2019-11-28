@@ -20,6 +20,7 @@ describe(`GameScreen component`, () => {
     const mistakes = 1;
     const gameTime = 0;
     const screenIndex = 0;
+    const onStopTick = jest.fn();
 
     const tree = renderer.create(
         <GameScreen
@@ -28,6 +29,7 @@ describe(`GameScreen component`, () => {
           gameTime={gameTime}
           screenIndex={screenIndex}
           settings={settings}
+          onStopTick={onStopTick}
         />
     ).toJSON();
 

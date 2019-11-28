@@ -14,7 +14,7 @@ const ScreenText = {
 };
 
 const LoseScreen = (props) => {
-  const {type} = props;
+  const {type, renderButton} = props;
 
   return (
     <section className="result">
@@ -23,13 +23,14 @@ const LoseScreen = (props) => {
       </div>
       <h2 className="result__title">{ScreenText[type].title}</h2>
       <p className="result__total result__total--fail">{ScreenText[type].text}</p>
-      <button className="replay" type="button">Попробовать ещё раз</button>
+      {renderButton()}
     </section>
   );
 };
 
 LoseScreen.propTypes = {
-  type: PropTypes.oneOf([`timeout`, `mistakes`])
+  type: PropTypes.oneOf([`timeout`, `mistakes`]),
+  renderButton: PropTypes.func.isRequired
 };
 
 export default LoseScreen;
