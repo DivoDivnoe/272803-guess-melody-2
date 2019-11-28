@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Preloader from '../preloader/preloader.jsx';
 
 const SECONDS_PER_MINUTE = 60;
 
@@ -12,11 +13,14 @@ const WelcomeScreen = (props) => {
       <div className="welcome__logo">
         <img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83" />
       </div>
-      <button className="welcome__button" disabled={!questions} onClick={() => {
-        onClick();
-      }}>
-        <span className="visually-hidden">Начать игру</span>
-      </button>
+      {questions ?
+        (
+          <button className="welcome__button" disabled={!questions} onClick={onClick}>
+            <span className="visually-hidden">Начать игру</span>
+          </button>
+        ) :
+        (<Preloader />)
+      }
       <h2 className="welcome__rules-title">Правила игры</h2>
       <p className="welcome__text">Правила просты:</p>
       <ul className="welcome__rules-list">

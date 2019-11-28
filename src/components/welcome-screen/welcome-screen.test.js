@@ -2,6 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import WelcomeScreen from './welcome-screen.jsx';
 
+jest.mock(`../preloader/preloader.jsx`, () => jest.fn().mockReturnValue(null));
+
 describe(`WelcomeScreen`, () => {
   it(`is rendered correctly`, () => {
     const mocks = {
