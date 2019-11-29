@@ -8,6 +8,9 @@ describe(`AuthorizationScreen component`, () => {
       name: ``,
       password: ``,
       serverStatus: 200,
+      history: {
+        goBack: jest.fn()
+      },
       onChange: jest.fn(),
       onSubmit: jest.fn(),
       onChangeServerStatus: jest.fn()
@@ -19,6 +22,7 @@ describe(`AuthorizationScreen component`, () => {
           name={name}
           password={password}
           serverStatus={serverStatus}
+          history={history}
           onChange={onChange}
           onSetUserData={onSubmit}
           onChangeServerStatus={onChangeServerStatus}

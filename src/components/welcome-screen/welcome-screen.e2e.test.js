@@ -9,13 +9,13 @@ describe(`WelcomeScreen component`, () => {
   it(`reacts to clicking the button correctly`, () => {
     const mocks = {
       settings: {time: 0, mistakes: 0},
-      questions: 1,
+      isLoading: false,
       onClick: jest.fn()};
-    const {settings, questions, onClick} = mocks;
+    const {settings, isLoading, onClick} = mocks;
 
     const welcomeScreen = shallow(
         <WelcomeScreen
-          questions={questions}
+          isLoading={isLoading}
           settings={settings}
           onClick={onClick}
         />

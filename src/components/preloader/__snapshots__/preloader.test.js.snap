@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preloader component is rendered correctly 1`] = `
+<div
+  className="preloader"
+  style={
+    Object {
+      "background": "url('../img/plate.gif') center center no-repeat",
+      "borderRadius": "50%",
+      "height": 64,
+      "left": "50%",
+      "overflow": "hidden",
+      "position": "absolute",
+      "top": "57%",
+      "transform": "translate(-50%, -50%)",
+      "width": 64,
+    }
+  }
+/>
+`;

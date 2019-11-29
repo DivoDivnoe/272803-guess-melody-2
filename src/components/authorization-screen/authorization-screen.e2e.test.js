@@ -11,6 +11,9 @@ describe(`AuthorizationScreen component`, () => {
       name: `Andrey`,
       password: `1234`,
       serverStatus: 200,
+      history: {
+        goBack: jest.fn()
+      },
       onChange: jest.fn(),
       onSetUserData: jest.fn(),
       onChangeServerStatus: jest.fn(),
@@ -20,6 +23,7 @@ describe(`AuthorizationScreen component`, () => {
       name,
       password,
       serverStatus,
+      history,
       onChange,
       onSetUserData,
       onChangeServerStatus,
@@ -31,6 +35,7 @@ describe(`AuthorizationScreen component`, () => {
           name={name}
           password={password}
           serverStatus={serverStatus}
+          history={history}
           onChange={onChange}
           onSetUserData={onSetUserData}
           onChangeServerStatus={onChangeServerStatus}
@@ -41,5 +46,6 @@ describe(`AuthorizationScreen component`, () => {
     expect(submitPrevention).toHaveBeenCalledTimes(1);
     expect(onSetUserData).toHaveBeenCalledTimes(1);
     expect(onSetUserData).toHaveBeenCalledWith({email: `Andrey`, password: `1234`}, onChangeServerStatus);
+    expect(history.goBack).toHaveBeenCalledTimes(1);
   });
 });

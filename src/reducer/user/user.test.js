@@ -62,12 +62,8 @@ describe(`setUserData function`, () => {
 
     return userAuthenticator(dispatch, null, api)
       .then(() => {
-        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
-          type: ActionType.AUTH_USER,
-          payload: false
-        });
-        expect(dispatch).toHaveBeenNthCalledWith(2, {
           type: ActionType.SET_USER_DATA,
           payload: {fake: true}
         });

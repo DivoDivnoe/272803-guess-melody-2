@@ -12,6 +12,7 @@ import AuthorizationScreen from '../authorization-screen/authorization-screen.js
 import withAuthData from '../../hocs/with-auth-data/with-auth-data';
 import withServerStatus from '../../hocs/with-server-status/with-server-status';
 import withReplay from '../../hocs/with-replay/with-replay';
+import withLoadingTracks from '../../hocs/with-loading-tracks/with-loading-tracks';
 import PrivateRoute from '../../hocs/private-route/private-route.jsx';
 
 import {Operation as DataOperation} from '../../reducer/data/data';
@@ -28,6 +29,7 @@ import {LoseType} from '../../constants';
 const AuthorizationScreenWithState = compose(withServerStatus, withAuthData)(AuthorizationScreen);
 const LoseScreenWithReplay = withReplay(LoseScreen);
 const WinScreenWithReplay = withReplay(WinScreen);
+const WelcomeScreenWithLoading = withLoadingTracks(WelcomeScreen);
 
 
 class App extends PureComponent {
@@ -105,10 +107,21 @@ class App extends PureComponent {
       <Switch>
         <Route path="/" exact render={() => {
           if (step < 0) {
+            const tracks = questions.map((item) => {
+              switch (item.type) {
+                case `artist`:
+                  return item.song.src;
+                case `genre`:
+                  return item.answers.map((answer) => answer.src);
+              }
+
+              return null;
+            }).reduce((acc, cur) => acc.concat(cur), []);
+
             return (
-              <WelcomeScreen
-                questions={questions.length}
+              <WelcomeScreenWithLoading
                 settings={settings}
+                tracks={tracks}
                 onClick={onWelcomeScreenClick}
               />
             );

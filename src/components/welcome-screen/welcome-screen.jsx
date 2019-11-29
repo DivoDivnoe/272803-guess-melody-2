@@ -5,7 +5,7 @@ import Preloader from '../preloader/preloader.jsx';
 const SECONDS_PER_MINUTE = 60;
 
 const WelcomeScreen = (props) => {
-  const {settings, questions, onClick} = props;
+  const {settings, isLoading, onClick} = props;
   const {time, mistakes} = settings;
 
   return (
@@ -13,9 +13,9 @@ const WelcomeScreen = (props) => {
       <div className="welcome__logo">
         <img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83" />
       </div>
-      {questions ?
+      {!isLoading ?
         (
-          <button className="welcome__button" disabled={!questions} onClick={onClick}>
+          <button className="welcome__button" onClick={onClick}>
             <span className="visually-hidden">Начать игру</span>
           </button>
         ) :
@@ -33,7 +33,7 @@ const WelcomeScreen = (props) => {
 };
 
 WelcomeScreen.propTypes = {
-  questions: PropTypes.number.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   settings: PropTypes.exact({
     time: PropTypes.number.isRequired,
     mistakes: PropTypes.number.isRequired

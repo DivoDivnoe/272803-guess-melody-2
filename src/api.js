@@ -1,9 +1,8 @@
 import axios from 'axios';
-import {ActionCreator} from './reducer/user/user';
 import {StatusCode, apiSettings} from './constants';
 import {useHistory} from 'react-router-dom';
 
-const createApi = (dispatch) => {
+const createApi = () => {
   const api = axios.create({
     baseURL: apiSettings.HOST,
     timeout: apiSettings.TIMEOUT,

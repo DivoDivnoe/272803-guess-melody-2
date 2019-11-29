@@ -4,7 +4,7 @@ import LoseScreen from './lose-screen.jsx';
 
 describe(`LoseScreen component`, () => {
   it(`is rendered correctly`, () => {
-    const type = `time`;
+    const type = `timeout`;
     const renderButton = jest.fn();
 
     const tree = renderer.create(

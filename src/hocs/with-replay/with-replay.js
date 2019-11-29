@@ -25,8 +25,6 @@ const withReplay = (Component) => {
     handleClick() {
       const {onReplay, history} = this.props;
 
-      console.log('history', history);
-
       onReplay();
       history.push(`/`);
     }

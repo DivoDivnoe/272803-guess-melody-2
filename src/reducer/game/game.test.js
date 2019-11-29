@@ -5,34 +5,14 @@ import {
 import {ActionType} from '../../constants';
 
 describe(`Action creators work correctly`, () => {
-  it(`for incrementing step if it is not final`, () => {
-    const step = 8;
-    const steps = 10;
-    const action = ActionCreator.incrementStep(step, steps);
-
-    expect(action).toEqual({
-      type: ActionType.INCREMENT_STEP,
-      payload: 1
-    });
-  });
-
-  it(`resets state if it is final step`, () => {
-    const step = 9;
-    const steps = 10;
-    const action = ActionCreator.incrementStep(step, steps);
-
-    expect(action).toEqual({type: ActionType.RESET});
-  });
-
   it(`for incrementing mistakes if the answer is right and question type is "Artist"`, () => {
     const userAnswer = {artist: `Ariya`};
     const question = {
       type: `artist`,
       song: {artist: `Ariya`}
     };
-    const mistakes = 0;
-    const maxMistakes = 3;
-    const action = ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes);
+
+    const action = ActionCreator.incrementMistakes(userAnswer, question);
 
     expect(action).toEqual({
       type: ActionType.INCREMENT_MISTAKES,
@@ -64,9 +44,8 @@ describe(`Action creators work correctly`, () => {
         },
       ],
     };
-    const mistakes = 0;
-    const maxMistakes = 3;
-    const action = ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes);
+
+    const action = ActionCreator.incrementMistakes(userAnswer, question);
 
     expect(action).toEqual({
       type: ActionType.INCREMENT_MISTAKES,
@@ -80,9 +59,8 @@ describe(`Action creators work correctly`, () => {
       type: `artist`,
       song: {artist: `Pink Floyd`}
     };
-    const mistakes = 0;
-    const maxMistakes = 3;
-    const action = ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes);
+
+    const action = ActionCreator.incrementMistakes(userAnswer, question);
 
     expect(action).toEqual({
       type: ActionType.INCREMENT_MISTAKES,
@@ -114,9 +92,8 @@ describe(`Action creators work correctly`, () => {
         },
       ],
     };
-    const mistakes = 0;
-    const maxMistakes = 3;
-    const action = ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes);
+
+    const action = ActionCreator.incrementMistakes(userAnswer, question);
 
     expect(action).toEqual({
       type: ActionType.INCREMENT_MISTAKES,
@@ -124,56 +101,19 @@ describe(`Action creators work correctly`, () => {
     });
   });
 
-  it(`resets state if the answer is wrong, question type is "Artist" and too many mistakes`, () => {
-    const userAnswer = {artist: `Ariya`};
-    const question = {
-      type: `artist`,
-      song: {artist: `Pink Floyd`}
-    };
-    const mistakes = 2;
-    const maxMistakes = 3;
-    const action = ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes);
-
-    expect(action).toEqual({type: ActionType.RESET});
-  });
-
-  it(`resets state if the answer is wrong, question type is "Genre" and no mistakes left`, () => {
-    const userAnswer = [1, 1, 1, 1];
-    const question = {
-      type: `genre`,
-      genre: `rock`,
-      answers: [
-        {
-          src: `../audio/Baskov-Sharmanka.mp3`,
-          genre: `pop`,
-        },
-        {
-          src: `../audio/Tisto-In_The_Dark.mp3`,
-          genre: `electronic`,
-        },
-        {
-          src: `../audio/Radiohead-Creep.mp3`,
-          genre: `rock`,
-        },
-        {
-          src: `../audio/Chaif-Arg-Jam.mp3`,
-          genre: `reggae`,
-        },
-      ],
-    };
-    const mistakes = 2;
-    const maxMistakes = 3;
-    const action = ActionCreator.incrementMistakes(userAnswer, question, mistakes, maxMistakes);
-
-    expect(action).toEqual({type: ActionType.RESET});
-  });
-
   it(`increments time correctly if the time is not over`, () => {
-    const curTime = 29;
-    const maxTime = 30;
-    const action = ActionCreator.incrementTime(curTime, maxTime);
+    const action = ActionCreator.incrementTime();
 
-    expect(action).toEqual({type: ActionType.RESET});
+    expect(action).toEqual({
+      type: ActionType.INCREMENT_TIME,
+      payload: 1
+    });
+  });
+
+  it(`restarts correctly`, () => {
+    const action = ActionCreator.replay();
+
+    expect(action).toEqual({type: ActionType.REPLAY});
   });
 });
 

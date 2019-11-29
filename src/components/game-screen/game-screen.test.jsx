@@ -1,5 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import {BrowserRouter} from 'react-router-dom';
 import GameScreen from './game-screen.jsx';
 
 jest.mock(`../guess-artist-screen/guess-artist-screen.jsx`, () => jest.fn().mockReturnValue(null));
@@ -23,14 +24,16 @@ describe(`GameScreen component`, () => {
     const onStopTick = jest.fn();
 
     const tree = renderer.create(
-        <GameScreen
-          question={question}
-          mistakes={mistakes}
-          gameTime={gameTime}
-          screenIndex={screenIndex}
-          settings={settings}
-          onStopTick={onStopTick}
-        />
+        <BrowserRouter>
+          <GameScreen
+            question={question}
+            mistakes={mistakes}
+            gameTime={gameTime}
+            screenIndex={screenIndex}
+            settings={settings}
+            onStopTick={onStopTick}
+          />
+        </BrowserRouter>
     ).toJSON();
 
     expect(tree).toMatchSnapshot();

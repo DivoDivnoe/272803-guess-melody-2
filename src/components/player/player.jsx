@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-class Player extends PureComponent {
+class Player extends Component {
   constructor(props) {
     super(props);
 
@@ -29,22 +29,30 @@ class Player extends PureComponent {
 
   componentDidMount() {
     const {src, onLoad} = this.props;
-
     const audio = this._audioRef.current;
 
     audio.src = src;
     audio.oncanplaythrough = onLoad;
-
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevprops) {
+    const {isPlaying, isLoading} = this.props;
+
+    if (prevprops.isPlaying === isPlaying && prevprops.isLoading === isLoading) {
+      return false;
+    }
+
     const audio = this._audioRef.current;
 
-    if (this.props.isPlaying) {
-      audio.play();
+    if (isPlaying) {
+      if (!isLoading) {
+        audio.play();
+      }
     } else {
       audio.pause();
     }
+
+    return true;
   }
 
   componentWillUnmount() {
