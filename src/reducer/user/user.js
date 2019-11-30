@@ -7,11 +7,12 @@ const initialState = {
 Object.freeze(initialState);
 
 const Operation = {
-  setUserData: (data, onFail) => (dispatch, __, api) => {
+  setUserData: (data, onSuccess, onFail) => (dispatch, __, api) => {
     return api.post(`/login`, data)
       .then((response) => {
         if (response.status === 200) {
           dispatch(ActionCreator.setUserData(response.data));
+          onSuccess();
         }
       })
       .catch((error) => {

@@ -22,18 +22,12 @@ exports[`WinScreen component is rendered correctly 1`] = `
   <p
     className="result__total"
   >
-    За 0 минуту и 30 секунд{getTimeEnding(seconds)} вы набрали 12 баллов (8 быстрых), совершив 1 ошибки
+    За 0 минут и 30 секунд{getTimeEnding(seconds)} вы набрали 12 баллов (8 быстрых), совершив 1 ошибки
   </p>
   <p
     className="result__text"
   >
     Вы заняли 2 место из 10. Это лучше чем у 80% игроков
   </p>
-  <button
-    className="replay"
-    type="button"
-  >
-    Сыграть ещё раз
-  </button>
 </section>
 `;

@@ -19,17 +19,29 @@ const Screen = {
 };
 
 const GameScreen = (props) => {
-  const {question, gameTime, mistakes, settings, onStopTick} = props;
+  const {
+    questionsAmount,
+    question,
+    gameTime,
+    mistakes,
+    settings,
+    step,
+    onStopTick,
+    onReset
+  } = props;
   const CurrentScreen = Screen[question.type];
 
   if (mistakes >= settings.mistakes || !gameTime) {
     onStopTick();
     return <Redirect to="/lose" />;
+  } else if (step >= questionsAmount) {
+    onStopTick();
+    return <Redirect to="/win" />;
   }
 
   return (
     <section className={`game game--${question.type}`}>
-      <Header gameTime={gameTime} mistakes={mistakes} />
+      <Header gameTime={gameTime} mistakes={mistakes} onReset={onReset} />
 
       <CurrentScreen {...props} />
     </section>
@@ -60,11 +72,14 @@ GameScreen.propTypes = {
   ]).isRequired,
   gameTime: PropTypes.number.isRequired,
   mistakes: PropTypes.number.isRequired,
+  step: PropTypes.number.isRequired,
+  questionsAmount: PropTypes.number.isRequired,
   settings: PropTypes.exact({
     time: PropTypes.number.isRequired,
     mistakes: PropTypes.number.isRequired
   }),
-  onStopTick: PropTypes.func.isRequired
+  onStopTick: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired
 };
 
 export default GameScreen;

@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Preloader from '../preloader/preloader.jsx';
+import {getMistakesEnding, getTimeEnding} from '../../utils';
 
 const SECONDS_PER_MINUTE = 60;
 
 const WelcomeScreen = (props) => {
   const {settings, isLoading, onClick} = props;
   const {time, mistakes} = settings;
+  const minutes = time / SECONDS_PER_MINUTE;
 
   return (
     <section className="welcome">
@@ -24,8 +26,8 @@ const WelcomeScreen = (props) => {
       <h2 className="welcome__rules-title">Правила игры</h2>
       <p className="welcome__text">Правила просты:</p>
       <ul className="welcome__rules-list">
-        <li>За {time / SECONDS_PER_MINUTE} минут нужно ответить на все вопросы.</li>
-        <li>Можно допустить {mistakes} ошибки.</li>
+        <li>За {minutes} минут{getTimeEnding(minutes)} нужно ответить на все вопросы.</li>
+        <li>Можно допустить {mistakes} ошиб{getMistakesEnding(mistakes)}.</li>
       </ul>
       <p className="welcome__text">Удачи!</p>
     </section>

@@ -7,6 +7,7 @@ const PrivateRoute = (props) => {
   const {render, isAuthenticated} = props;
 
   if (isAuthenticated) {
+    console.log('to /win');
     return <Route {...props} render={render} />;
   }
 

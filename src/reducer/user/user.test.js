@@ -52,9 +52,10 @@ describe(`setUserData function`, () => {
     const api = createApi(dispatch);
     const mockApi = new MockAdapter(api);
     const data = {};
+    const onSuccess = jest.fn();
     const onFail = jest.fn();
 
-    const userAuthenticator = Operation.setUserData(data, onFail);
+    const userAuthenticator = Operation.setUserData(data, onSuccess, onFail);
 
     mockApi
       .onPost(`/login`)
@@ -62,11 +63,33 @@ describe(`setUserData function`, () => {
 
     return userAuthenticator(dispatch, null, api)
       .then(() => {
+        expect(onSuccess).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenCalledTimes(1);
         expect(dispatch).toHaveBeenNthCalledWith(1, {
           type: ActionType.SET_USER_DATA,
           payload: {fake: true}
         });
+      });
+  });
+
+  it(`should make a correct "POST" request to /login`, () => {
+    const dispatch = jest.fn();
+    const api = createApi(dispatch);
+    const mockApi = new MockAdapter(api);
+    const data = {};
+    const onSuccess = jest.fn();
+    const onFail = jest.fn();
+
+    const userAuthenticator = Operation.setUserData(data, onSuccess, onFail);
+
+    mockApi
+      .onPost(`/login`)
+      .reply(400, {fake: true});
+
+    return userAuthenticator(dispatch, null, api)
+      .then(() => {
+        expect(onFail).toHaveBeenCalledTimes(1);
+        expect(dispatch).toHaveBeenCalledTimes(0);
       });
   });
 });

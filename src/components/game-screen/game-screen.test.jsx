@@ -21,7 +21,10 @@ describe(`GameScreen component`, () => {
     const mistakes = 1;
     const gameTime = 0;
     const screenIndex = 0;
+    const step = 2;
+    const questionsAmount = 10;
     const onStopTick = jest.fn();
+    const onReset = jest.fn();
 
     const tree = renderer.create(
         <BrowserRouter>
@@ -31,7 +34,10 @@ describe(`GameScreen component`, () => {
             gameTime={gameTime}
             screenIndex={screenIndex}
             settings={settings}
+            step={step}
+            questionsAmount={questionsAmount}
             onStopTick={onStopTick}
+            onReset={onReset}
           />
         </BrowserRouter>
     ).toJSON();

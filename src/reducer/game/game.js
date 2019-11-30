@@ -1,9 +1,13 @@
-import {ActionType} from '../../constants';
+import {ActionType, Points} from '../../constants';
+
+const FAST_ANSWER_TIME = 30;
 
 const initialState = {
   mistakes: 0,
   step: -1,
-  gameTime: 0
+  gameTime: 0,
+  lastAnswerTime: 0,
+  points: 0
 };
 
 Object.freeze(initialState);
@@ -15,7 +19,7 @@ const ActionCreator = {
       payload: 1
     };
   },
-  incrementMistakes: (userAnswer, question) => {
+  incrementMistakes: (userAnswer, question, gameTime, lastAnswerTime) => {
     let result;
 
     switch (question.type) {
@@ -27,9 +31,13 @@ const ActionCreator = {
         break;
     }
 
+    if (result) {
+      return ActionCreator.addPoints(gameTime, lastAnswerTime);
+    }
+
     return {
       type: ActionType.INCREMENT_MISTAKES,
-      payload: +!result
+      payload: 1
     };
   },
   reset: () => {
@@ -47,6 +55,20 @@ const ActionCreator = {
       type: ActionType.INCREMENT_TIME,
       payload: 1
     };
+  },
+  setLastAnswerTime: () => {
+    return {
+      type: ActionType.SET_LAST_ANSWER_TIME
+    };
+  },
+  addPoints: (gameTime, lastAnswerTime) => {
+    const answerTime = gameTime - lastAnswerTime;
+    const points = answerTime < FAST_ANSWER_TIME ? Points.FAST_RIGHT_ANSWER : Points.RIGHT_ANSWER;
+
+    return {
+      type: ActionType.ADD_POINTS,
+      payload: points
+    };
   }
 };
 
@@ -62,6 +84,10 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, initialState, {step: 0});
     case ActionType.INCREMENT_TIME:
       return Object.assign({}, state, {gameTime: state.gameTime + action.payload});
+    case ActionType.ADD_POINTS:
+      return Object.assign({}, state, {points: state.points + action.payload});
+    case ActionType.SET_LAST_ANSWER_TIME:
+      return Object.assign({}, state, {lastAnswerTime: state.gameTime});
   }
 
   return state;

@@ -60,8 +60,7 @@ class AuthorizationScreen extends PureComponent {
     const {name, password, history, onSetUserData, onChangeServerStatus} = this.props;
 
     evt.preventDefault();
-    onSetUserData({email: name, password}, onChangeServerStatus);
-    history.goBack();
+    onSetUserData({email: name, password}, () => history.goBack(), onChangeServerStatus);
   }
 }
 

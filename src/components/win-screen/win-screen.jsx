@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {parseTime, getTimeEnding} from '../../utils';
 
 const WinScreen = (props) => {
-  const {gameTime, mistakes} = props;
+  const {gameTime, mistakes, renderButton} = props;
   const {minutes, seconds} = parseTime(gameTime);
 
   return (
@@ -16,14 +16,15 @@ const WinScreen = (props) => {
         {`За ${minutes} минут${getTimeEnding(minutes)} и ${seconds} секунд{getTimeEnding(seconds)} вы набрали 12 баллов (8 быстрых), совершив ${mistakes} ошибки`}
       </p>
       <p className="result__text">Вы заняли 2 место из 10. Это лучше чем у 80% игроков</p>
-      <button className="replay" type="button">Сыграть ещё раз</button>
+      {renderButton()}
     </section>
   );
 };
 
 WinScreen.propTypes = {
   gameTime: PropTypes.number.isRequired,
-  mistakes: PropTypes.number.isRequired
+  mistakes: PropTypes.number.isRequired,
+  renderButton: PropTypes.func.isRequired
 };
 
 export default WinScreen;
