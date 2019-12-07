@@ -7,6 +7,19 @@ const initialState = {
 Object.freeze(initialState);
 
 const Operation = {
+  getUserData: () => (dispatch, _, api) => {
+    return api.get(`/login`)
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch(ActionCreator.setUserData(response.data));
+      }
+    })
+    .catch((error) => {
+      if (error.response.status === StatusCode.FORBIDDEN) {
+        dispatch(ActionCreator.setUserData({}));
+      }
+    });
+  },
   setUserData: (data, onSuccess, onFail) => (dispatch, __, api) => {
     return api.post(`/login`, data)
       .then((response) => {

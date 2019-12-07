@@ -7,7 +7,8 @@ const initialState = {
   step: -1,
   gameTime: 0,
   lastAnswerTime: 0,
-  points: 0
+  slowPoints: 0,
+  fastPoints: 0
 };
 
 Object.freeze(initialState);
@@ -63,11 +64,20 @@ const ActionCreator = {
   },
   addPoints: (gameTime, lastAnswerTime) => {
     const answerTime = gameTime - lastAnswerTime;
-    const points = answerTime < FAST_ANSWER_TIME ? Points.FAST_RIGHT_ANSWER : Points.RIGHT_ANSWER;
 
+    if (answerTime >= FAST_ANSWER_TIME) {
+      return {
+        type: ActionType.ADD_SLOW_POINTS,
+        payload: Points.RIGHT_ANSWER
+      };
+    }
+
+    return ActionCreator.addFastPoints();
+  },
+  addFastPoints: () => {
     return {
-      type: ActionType.ADD_POINTS,
-      payload: points
+      type: ActionType.ADD_FAST_POINTS,
+      payload: Points.FAST_RIGHT_ANSWER
     };
   }
 };
@@ -84,8 +94,10 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, initialState, {step: 0});
     case ActionType.INCREMENT_TIME:
       return Object.assign({}, state, {gameTime: state.gameTime + action.payload});
-    case ActionType.ADD_POINTS:
-      return Object.assign({}, state, {points: state.points + action.payload});
+    case ActionType.ADD_SLOW_POINTS:
+      return Object.assign({}, state, {slowPoints: state.slowPoints + action.payload});
+    case ActionType.ADD_FAST_POINTS:
+      return Object.assign({}, state, {fastPoints: state.fastPoints + action.payload});
     case ActionType.SET_LAST_ANSWER_TIME:
       return Object.assign({}, state, {lastAnswerTime: state.gameTime});
   }

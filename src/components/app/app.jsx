@@ -19,14 +19,14 @@ import {Operation as DataOperation} from '../../reducer/data/data';
 import {getQuestions} from '../../reducer/data/selectors';
 
 import {ActionCreator as GameActionCreator} from '../../reducer/game/game';
-import {getStep, getMistakes, getGameTime, getLastAnswerTime, getPoints} from '../../reducer/game/selectors';
+import {getStep, getMistakes, getGameTime, getLastAnswerTime, getPoints, getFastPoints} from '../../reducer/game/selectors';
 
 import {Operation as UserOperation} from '../../reducer/user/user';
 import {getUserData} from '../../reducer/user/selectors';
 
 import {LoseType} from '../../constants';
 
-const AuthorizationScreenWithState = compose(withServerStatus, withAuthData)(AuthorizationScreen);
+const AuthorizationScreenWithState = compose(withServerStatus, withReplay, withAuthData)(AuthorizationScreen);
 const LoseScreenWithReplay = withReplay(LoseScreen);
 const WinScreenWithReplay = withReplay(WinScreen);
 const WelcomeScreenWithLoading = withLoadingTracks(WelcomeScreen);
@@ -36,41 +36,13 @@ class App extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.tickId = null;
-
-    this.handleTick = this.handleTick.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
-    this.handleStopTick = this.handleStopTick.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.handleStartGame = this.handleStartGame.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    const {gameTime, settings} = this.props;
-
-    if (gameTime < settings.time && prevProps.gameTime !== gameTime && !(prevProps.gameTime > 0 && !gameTime)) {
-      this.handleTick();
-    }
-
-    console.log(this.props.questions);
-    console.log(this.props.user);
-  }
-
-  handleTick() {
-    const {onTick} = this.props;
-
-    this.tickId = setTimeout(() => onTick(), 1000);
-  }
-
-  handleStopTick() {
-    if (!this.tickId) {
-      return false;
-    }
-
-    clearTimeout(this.tickId);
-    this.tickId = null;
-
-    return true;
+  componentDidMount() {
+    this.props.onGetUserData();
   }
 
   handleAnswer(userAnswer) {
@@ -88,13 +60,11 @@ class App extends PureComponent {
   }
 
   handleReset() {
-    this.handleStopTick();
     this.props.onReset();
   }
 
   handleStartGame() {
     this.props.onWelcomeScreenClick();
-    this.props.onTick();
   }
 
   render() {
@@ -106,8 +76,10 @@ class App extends PureComponent {
       gameTime,
       user,
       points,
+      fastPoints,
       onSetUserData,
       onReplay,
+      onTick,
       onLoadQuestions
     } = this.props;
 
@@ -136,38 +108,48 @@ class App extends PureComponent {
             );
           }
 
-          const question = questions[step];
           const timeLeft = settings.time - gameTime;
 
           return (
             <GameScreen
               settings={settings}
-              question={question}
+              questions={questions}
               screenIndex={step}
               mistakes={mistakes}
               gameTime={timeLeft}
               step={step}
               questionsAmount={questions.length}
-              onStopTick={this.handleStopTick}
               onAnswer={this.handleAnswer}
               onReset={this.handleReset}
+              onTick={onTick}
             />
           );
         }} />
-        <Route path="/auth" exact render={({history}) => (
-          <AuthorizationScreenWithState onSetUserData={onSetUserData} history={history} />
-        )} />
-        <PrivateRoute path="/win" exact isAuthenticated={!!Object.keys(user).length} render={({history}) => {
-          if (step < questions.length) {
+        <Route path="/auth" exact render={({history}) => {
+          if (mistakes >= settings.mistakes || gameTime >= settings.time || step < questions.length) {
             return <Redirect to="/" />;
           }
 
           return (
-            <WinScreenWithReplay
+            <AuthorizationScreenWithState
               mistakes={mistakes}
               gameTime={gameTime}
               history={history}
               points={points}
+              fastPoints={fastPoints}
+              onReplay={onReplay}
+              onSetUserData={onSetUserData}
+            />
+          );
+        }} />
+        <PrivateRoute path="/win" exact isAuthenticated={!!Object.keys(user).length} render={({history}) => {
+          return (
+            <WinScreenWithReplay
+              mistakes={mistakes}
+              gameTime={gameTime}
+              points={points}
+              history={history}
+              fastPoints={fastPoints}
               onReplay={onReplay}
             />
           );
@@ -228,10 +210,12 @@ App.propTypes = {
   gameTime: PropTypes.number.isRequired,
   lastAnswerTime: PropTypes.number.isRequired,
   points: PropTypes.number.isRequired,
+  fastPoints: PropTypes.number.isRequired,
   onWelcomeScreenClick: PropTypes.func.isRequired,
   onUserAnswer: PropTypes.func.isRequired,
   onTick: PropTypes.func.isRequired,
   onLoadQuestions: PropTypes.func.isRequired,
+  onGetUserData: PropTypes.func.isRequired,
   onSetUserData: PropTypes.func.isRequired,
   onReplay: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired
@@ -244,14 +228,18 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   questions: getQuestions(state),
   user: getUserData(state),
   lastAnswerTime: getLastAnswerTime(state),
-  points: getPoints(state)
+  points: getPoints(state),
+  fastPoints: getFastPoints(state)
 });
 const mapDispatchToProps = (dispatch) => ({
   onLoadQuestions: () => dispatch(DataOperation.loadQuestions()),
+  onGetUserData: () => dispatch(UserOperation.getUserData()),
   onSetUserData: (data, onSuccess, onFail) => dispatch(UserOperation.setUserData(data, onSuccess, onFail)),
   onWelcomeScreenClick: () => dispatch(GameActionCreator.incrementStep()),
   onTick: () => dispatch(GameActionCreator.incrementTime()),
-  onReplay: () => dispatch(GameActionCreator.replay()),
+  onReplay: () => {
+    dispatch(GameActionCreator.replay());
+  },
   onReset: () => dispatch(GameActionCreator.reset()),
   onUserAnswer: (userAnswer, question, gameTime, lastAnswerTime) => {
     dispatch(GameActionCreator.incrementStep());

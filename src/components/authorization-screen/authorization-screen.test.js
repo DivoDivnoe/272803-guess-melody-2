@@ -11,11 +11,30 @@ describe(`AuthorizationScreen component`, () => {
       history: {
         goBack: jest.fn()
       },
+      gameTime: 30,
+      mistakes: 0,
+      points: 18,
+      fastPoints: 10,
+      onSuccess: jest.fn(),
+      renderButton: jest.fn(),
       onChange: jest.fn(),
       onSubmit: jest.fn(),
       onChangeServerStatus: jest.fn()
     };
-    const {name, password, serverStatus, onChange, onSubmit, onChangeServerStatus} = mock;
+    const {
+      name,
+      password,
+      serverStatus,
+      gameTime,
+      mistakes,
+      points,
+      fastPoints,
+      onSuccess,
+      renderButton,
+      onChange,
+      onSubmit,
+      onChangeServerStatus
+    } = mock;
 
     const tree = renderer.create(
         <AuthorizationScreen
@@ -23,6 +42,12 @@ describe(`AuthorizationScreen component`, () => {
           password={password}
           serverStatus={serverStatus}
           history={history}
+          gameTime={gameTime}
+          mistakes={mistakes}
+          points={points}
+          fastPoints={fastPoints}
+          onSuccess={onSuccess}
+          renderButton={renderButton}
           onChange={onChange}
           onSetUserData={onSubmit}
           onChangeServerStatus={onChangeServerStatus}

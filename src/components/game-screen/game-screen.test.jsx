@@ -9,11 +9,13 @@ jest.mock(`../header/header.jsx`, () => jest.fn().mockReturnValue(null));
 
 describe(`GameScreen component`, () => {
   it(`is rendered correctly`, () => {
-    const question = {
-      type: `artist`,
-      song: {artist: ``, src: ``},
-      answers: [{picture: `http://somesrc/`, artist: ``}]
-    };
+    const questions = [
+      {
+        type: `artist`,
+        song: {artist: ``, src: ``},
+        answers: [{picture: `http://somesrc/`, artist: ``}]
+      }
+    ];
     const settings = {
       time: 30,
       mistakes: 2
@@ -23,21 +25,21 @@ describe(`GameScreen component`, () => {
     const screenIndex = 0;
     const step = 2;
     const questionsAmount = 10;
-    const onStopTick = jest.fn();
     const onReset = jest.fn();
+    const onTick = jest.fn();
 
     const tree = renderer.create(
         <BrowserRouter>
           <GameScreen
-            question={question}
+            questions={questions}
             mistakes={mistakes}
             gameTime={gameTime}
             screenIndex={screenIndex}
             settings={settings}
             step={step}
             questionsAmount={questionsAmount}
-            onStopTick={onStopTick}
             onReset={onReset}
+            onTick={onTick}
           />
         </BrowserRouter>
     ).toJSON();

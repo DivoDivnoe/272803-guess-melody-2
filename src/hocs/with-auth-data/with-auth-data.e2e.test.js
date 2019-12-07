@@ -34,9 +34,12 @@ MockCompoment.propTypes = {
 describe(`Component return by withAuthData function`, () => {
   it(`has empty fields by default`, () => {
     const MockComponentWrapped = withAuthData(MockCompoment);
+    const history = {
+      goBack: jest.fn()
+    };
 
     const wrapper = mount(
-        <MockComponentWrapped />
+        <MockComponentWrapped history={history} />
     );
 
     expect(wrapper.find(`input`).at(0).props().value).toEqual(``);
@@ -45,9 +48,12 @@ describe(`Component return by withAuthData function`, () => {
 
   it(`changes state correctly`, () => {
     const MockComponentWrapped = withAuthData(MockCompoment);
+    const history = {
+      goBack: jest.fn()
+    };
 
     const wrapper = mount(
-        <MockComponentWrapped />
+        <MockComponentWrapped history={history} />
     );
 
     wrapper.find(`input`).first().simulate(`change`, {

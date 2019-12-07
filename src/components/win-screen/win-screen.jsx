@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {parseTime, getTimeEnding} from '../../utils';
+import {parseTime, getTimeEnding, getMistakesEnding} from '../../utils';
 
 const WinScreen = (props) => {
-  const {gameTime, mistakes, renderButton} = props;
+  const {gameTime, mistakes, points, fastPoints, renderButton} = props;
   const {minutes, seconds} = parseTime(gameTime);
 
   return (
@@ -13,7 +13,7 @@ const WinScreen = (props) => {
       </div>
       <h2 className="result__title">Вы настоящий меломан!</h2>
       <p className="result__total">
-        {`За ${minutes} минут${getTimeEnding(minutes)} и ${seconds} секунд{getTimeEnding(seconds)} вы набрали 12 баллов (8 быстрых), совершив ${mistakes} ошибки`}
+        {`За ${minutes} минут${getTimeEnding(minutes)} и ${seconds} секунд${getTimeEnding(seconds)} вы набрали ${points} баллов (${fastPoints} быстрых), совершив ${mistakes} ошиб${getMistakesEnding(mistakes)}`}
       </p>
       <p className="result__text">Вы заняли 2 место из 10. Это лучше чем у 80% игроков</p>
       {renderButton()}
@@ -24,6 +24,8 @@ const WinScreen = (props) => {
 WinScreen.propTypes = {
   gameTime: PropTypes.number.isRequired,
   mistakes: PropTypes.number.isRequired,
+  points: PropTypes.number.isRequired,
+  fastPoints: PropTypes.number.isRequired,
   renderButton: PropTypes.func.isRequired
 };
 

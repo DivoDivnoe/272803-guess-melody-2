@@ -17,7 +17,7 @@ describe(`Action creators work correctly`, () => {
     const action = ActionCreator.incrementMistakes(userAnswer, question, gameTime, lastAnswerTime);
 
     expect(action).toEqual({
-      type: ActionType.ADD_POINTS,
+      type: ActionType.ADD_FAST_POINTS,
       payload: 2
     });
   });
@@ -52,7 +52,7 @@ describe(`Action creators work correctly`, () => {
     const action = ActionCreator.incrementMistakes(userAnswer, question, gameTime, lastAnswerTime);
 
     expect(action).toEqual({
-      type: ActionType.ADD_POINTS,
+      type: ActionType.ADD_SLOW_POINTS,
       payload: 1
     });
   });
@@ -136,7 +136,7 @@ describe(`Action creators work correctly`, () => {
     const action = ActionCreator.addPoints(30, 10);
 
     expect(action).toEqual({
-      type: ActionType.ADD_POINTS,
+      type: ActionType.ADD_FAST_POINTS,
       payload: 2
     });
   });
@@ -145,7 +145,7 @@ describe(`Action creators work correctly`, () => {
     const action = ActionCreator.addPoints(50, 20);
 
     expect(action).toEqual({
-      type: ActionType.ADD_POINTS,
+      type: ActionType.ADD_SLOW_POINTS,
       payload: 1
     });
   });
@@ -159,7 +159,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     });
   });
 
@@ -169,7 +170,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     };
 
     const action = {
@@ -182,7 +184,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     });
   });
 
@@ -192,7 +195,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     };
 
     const action = {
@@ -205,7 +209,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 1,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     });
   });
 
@@ -215,7 +220,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     };
 
     const action = {
@@ -228,7 +234,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     });
   });
 
@@ -238,7 +245,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 2,
       gameTime: 10,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     };
 
     const action = {type: ActionType.RESET};
@@ -248,7 +256,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 0,
       gameTime: 0,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     });
   });
 
@@ -258,7 +267,8 @@ describe(`reducer returns correct state`, () => {
       mistakes: 1,
       gameTime: 10,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     };
 
     const action = {type: ActionType.SET_LAST_ANSWER_TIME};
@@ -268,27 +278,52 @@ describe(`reducer returns correct state`, () => {
       mistakes: 1,
       gameTime: 10,
       lastAnswerTime: 10,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     });
   });
 
-  it(`with add points action`, () => {
+  it(`with add slow points action`, () => {
     const state = {
       step: 1,
       mistakes: 1,
       gameTime: 10,
       lastAnswerTime: 0,
-      points: 0
+      slowPoints: 0,
+      fastPoints: 0
     };
 
-    const action = {type: ActionType.ADD_POINTS, payload: 1};
+    const action = {type: ActionType.ADD_SLOW_POINTS, payload: 1};
 
     expect(reducer(state, action)).toEqual({
       step: 1,
       mistakes: 1,
       gameTime: 10,
       lastAnswerTime: 0,
-      points: 1
+      slowPoints: 1,
+      fastPoints: 0
+    });
+  });
+
+  it(`with add fast points action`, () => {
+    const state = {
+      step: 1,
+      mistakes: 1,
+      gameTime: 10,
+      lastAnswerTime: 0,
+      slowPoints: 0,
+      fastPoints: 0
+    };
+
+    const action = {type: ActionType.ADD_FAST_POINTS, payload: 2};
+
+    expect(reducer(state, action)).toEqual({
+      step: 1,
+      mistakes: 1,
+      gameTime: 10,
+      lastAnswerTime: 0,
+      slowPoints: 0,
+      fastPoints: 2
     });
   });
 });
