@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {StatusCode} from '../../constants';
-
+import {parseTime, getTimeEnding, getMistakesEnding} from '../../utils';
 class AuthorizationScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -10,7 +10,19 @@ class AuthorizationScreen extends PureComponent {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   render() {
-    const {name, password, serverStatus} = this.props;
+    const {
+      name,
+      password,
+      serverStatus,
+      points,
+      fastPoints,
+      gameTime,
+      mistakes,
+      renderButton
+    } = this.props;
+
+    const {minutes, seconds} = parseTime(gameTime);
+
     const style = {
       position: `absolute`,
       top: `100%`,
@@ -25,7 +37,7 @@ class AuthorizationScreen extends PureComponent {
           <img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83" />
         </div>
         <h2 className="login__title">Вы настоящий меломан!</h2>
-        <p className="login__total">За 3 минуты и 25 секунд вы набрали 12 баллов (8 быстрых), совершив 3 ошибки</p>
+        <p className="login__total">{`За ${minutes} минут${getTimeEnding(minutes)} и ${seconds} секунд${getTimeEnding(seconds)} вы набрали ${points} баллов (${fastPoints} быстрых), совершив ${mistakes} ошиб${getMistakesEnding(mistakes)}`}</p>
         <p className="login__text">Хотите сравнить свой результат с предыдущими попытками? Представтесь!</p>
         <form style={{position: `relative`}} className="login__form" action="#" onSubmit={this.handleSubmit}>
           <p className="login__field">
@@ -44,7 +56,7 @@ class AuthorizationScreen extends PureComponent {
             disabled={!(name.length && password.length)}
           >Войти</button>
         </form>
-        <button className="replay" type="button">Сыграть ещё раз</button>
+        {renderButton()}
       </section>
     );
   }
@@ -57,10 +69,10 @@ class AuthorizationScreen extends PureComponent {
   }
 
   handleSubmit(evt) {
-    const {name, password, onSetUserData, onChangeServerStatus} = this.props;
+    const {name, password, onSetUserData, onChangeServerStatus, onSuccess} = this.props;
 
     evt.preventDefault();
-    onSetUserData({email: name, password}, onChangeServerStatus);
+    onSetUserData({email: name, password}, onSuccess, onChangeServerStatus);
   }
 }
 
@@ -70,7 +82,13 @@ AuthorizationScreen.propTypes = {
   serverStatus: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   onSetUserData: PropTypes.func.isRequired,
-  onChangeServerStatus: PropTypes.func.isRequired
+  gameTime: PropTypes.number.isRequired,
+  mistakes: PropTypes.number.isRequired,
+  points: PropTypes.number.isRequired,
+  fastPoints: PropTypes.number.isRequired,
+  onChangeServerStatus: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
+  renderButton: PropTypes.func.isRequired
 };
 
 export default AuthorizationScreen;

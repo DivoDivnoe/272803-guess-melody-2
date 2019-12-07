@@ -7,6 +7,7 @@ exports[`Header component is rendered correctly 1`] = `
   <a
     className="game__back"
     href="#"
+    onClick={[Function]}
   >
     <span
       className="visually-hidden"

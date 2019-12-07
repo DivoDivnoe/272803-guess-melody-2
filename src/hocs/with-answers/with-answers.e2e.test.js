@@ -29,7 +29,9 @@ MockCompoment.propTypes = {
 describe(`Component return by withAnswers function`, () => {
   it(`reacts correctly to click event`, () => {
     const screenIndex = 0;
-    const question = {
+    const questions = [{
+      type: `genre`,
+      genre: `some genre`,
       answers: [
         {
           src: `some/src`,
@@ -48,10 +50,11 @@ describe(`Component return by withAnswers function`, () => {
           genre: `some genre`
         }
       ]
-    };
+    }];
+    const step = 0;
     const MockComponentWrapped = withAnswers(MockCompoment);
     const wrapper = mount(
-        <MockComponentWrapped question={question} screenIndex={screenIndex} />
+        <MockComponentWrapped questions={questions} screenIndex={screenIndex} step={step} />
     );
 
 

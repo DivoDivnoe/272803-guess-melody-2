@@ -6,17 +6,18 @@ const withAnswers = (Component) => {
     constructor(props) {
       super(props);
 
-      const answer = Array.from({length: props.question.answers.length}, () => 0);
+      const question = props.questions[props.step];
+      const answer = Array.from({length: question.answers.length}, () => 0);
       this.state = {answer};
 
       this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidUpdate(prevProps) {
-      const {screenIndex, question} = this.props;
+      const {screenIndex, questions, step} = this.props;
 
       if (prevProps.screenIndex !== screenIndex) {
-        const answer = Array.from({length: question.answers.length}, () => 0);
+        const answer = Array.from({length: questions[step].answers.length}, () => 0);
         this.setState({answer});
       }
     }
@@ -41,12 +42,30 @@ const withAnswers = (Component) => {
 
   WithAnswers.propTypes = {
     screenIndex: PropTypes.number.isRequired,
-    question: PropTypes.shape({
-      answers: PropTypes.arrayOf(PropTypes.exact({
-        src: PropTypes.string.isRequired,
-        genre: PropTypes.string.isRequired
-      }))
-    }).isRequired
+    step: PropTypes.number.isRequired,
+    questions: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.exact({
+            type: PropTypes.oneOf([`genre`]).isRequired,
+            genre: PropTypes.string.isRequired,
+            answers: PropTypes.arrayOf(PropTypes.exact({
+              src: PropTypes.string.isRequired,
+              genre: PropTypes.string.isRequired
+            })).isRequired,
+          }),
+          PropTypes.exact({
+            type: PropTypes.oneOf([`artist`]).isRequired,
+            song: PropTypes.exact({
+              src: PropTypes.string.isRequired,
+              artist: PropTypes.string.isRequired
+            }).isRequired,
+            answers: PropTypes.arrayOf(PropTypes.exact({
+              picture: PropTypes.string.isRequired,
+              artist: PropTypes.string.isRequired
+            })).isRequired,
+          })
+        ])
+    ).isRequired,
   };
 
   return WithAnswers;

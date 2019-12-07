@@ -3,14 +3,23 @@ const GameType = {
   GENRE: `genre`
 };
 
+const Points = {
+  FAST_RIGHT_ANSWER: 2,
+  RIGHT_ANSWER: 1
+};
+
 const ActionType = {
   INCREMENT_STEP: `INCREMENT_STEP`,
   INCREMENT_MISTAKES: `INCREMENT_MISTAKES`,
   RESET: `RESET`,
+  REPLAY: `REPLAY`,
   INCREMENT_TIME: `INCREMENT_TIME`,
   LOAD_QUESTIONS: `LOAD_QUESTIONS`,
   AUTH_USER: `AUTH_USER`,
-  SET_USER_DATA: `SET_USER_DATA`
+  SET_USER_DATA: `SET_USER_DATA`,
+  SET_LAST_ANSWER_TIME: `SET_LAST_ANSWER_TIME`,
+  ADD_SLOW_POINTS: `ADD_SLOW_POINTS`,
+  ADD_FAST_POINTS: `ADD_FAST_POINTS`
 };
 
 const gameSettings = {
@@ -32,10 +41,17 @@ const apiSettings = {
   TIMEOUT: 5000
 };
 
+const LoseType = {
+  TIMEOUT: `timeout`,
+  MANY_MISTAKES: `mistakes`
+};
+
 export {
   GameType,
   ActionType,
   StatusCode,
   gameSettings,
-  apiSettings
+  apiSettings,
+  LoseType,
+  Points
 };

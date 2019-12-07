@@ -11,6 +11,15 @@ describe(`AuthorizationScreen component`, () => {
       name: `Andrey`,
       password: `1234`,
       serverStatus: 200,
+      history: {
+        goBack: jest.fn()
+      },
+      gameTime: 30,
+      mistakes: 0,
+      points: 18,
+      fastPoints: 10,
+      onSuccess: jest.fn(),
+      renderButton: jest.fn(),
       onChange: jest.fn(),
       onSetUserData: jest.fn(),
       onChangeServerStatus: jest.fn(),
@@ -20,8 +29,15 @@ describe(`AuthorizationScreen component`, () => {
       name,
       password,
       serverStatus,
+      history,
+      gameTime,
+      mistakes,
+      points,
+      fastPoints,
+      renderButton,
       onChange,
       onSetUserData,
+      onSuccess,
       onChangeServerStatus,
       submitPrevention
     } = mock;
@@ -31,6 +47,13 @@ describe(`AuthorizationScreen component`, () => {
           name={name}
           password={password}
           serverStatus={serverStatus}
+          history={history}
+          gameTime={gameTime}
+          mistakes={mistakes}
+          points={points}
+          fastPoints={fastPoints}
+          onSuccess={onSuccess}
+          renderButton={renderButton}
           onChange={onChange}
           onSetUserData={onSetUserData}
           onChangeServerStatus={onChangeServerStatus}
@@ -40,6 +63,6 @@ describe(`AuthorizationScreen component`, () => {
     wrapper.find(`form`).simulate(`submit`, {preventDefault: submitPrevention});
     expect(submitPrevention).toHaveBeenCalledTimes(1);
     expect(onSetUserData).toHaveBeenCalledTimes(1);
-    expect(onSetUserData).toHaveBeenCalledWith({email: `Andrey`, password: `1234`}, onChangeServerStatus);
+    expect(onSetUserData).toHaveBeenCalledWith({email: `Andrey`, password: `1234`}, onSuccess, onChangeServerStatus);
   });
 });

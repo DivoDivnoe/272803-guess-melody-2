@@ -9,11 +9,13 @@ describe(`Header component`, () => {
   it(`is rendered correctly`, () => {
     const gameTime = 10;
     const mistakes = 2;
+    const onReset = jest.fn();
 
     const tree = renderer.create(
         <Header
           gameTime={gameTime}
           mistakes={mistakes}
+          onReset={onReset}
         />
     ).toJSON();
 

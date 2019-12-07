@@ -3,6 +3,11 @@
 exports[`Timer component is rendered correctly 1`] = `
 <div
   className="timer__value"
+  style={
+    Object {
+      "color": "red",
+    }
+  }
   xmlns="http://www.w3.org/1999/xhtml"
 >
   <span

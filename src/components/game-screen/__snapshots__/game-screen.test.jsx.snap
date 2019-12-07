@@ -1,7 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GameScreen component is rendered correctly 1`] = `
-<section
-  className="game game--artist"
-/>
-`;
+exports[`GameScreen component is rendered correctly 1`] = `null`;
